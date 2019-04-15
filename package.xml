@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<package>
+  <name>move_ur5_qt</name>
+  <version>0.1.0</version>
+  <description>
+
+     move_ur5_qt
+
+  </description>
+  <maintainer email="zhangmervyn@gmail.com">Eric</maintainer>
+  <author>Eric</author>
+  <license>BSD</license>
+  <!-- <url type="bugtracker">https://github.com/stonier/qt_ros/issues</url> -->
+  <!-- <url type="repository">https://github.com/stonier/qt_ros</url> -->
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>qt_build</build_depend>
+  <build_depend>roscpp</build_depend>
+  <build_depend>libqt4-dev</build_depend>
+  <run_depend>qt_build</run_depend>
+  <run_depend>roscpp</run_depend>
+  <run_depend>libqt4-dev</run_depend>
+  <build_depend>actionlib</build_depend>
+  <run_depend>actionlib</run_depend>
+  <build_depend>control_msgs</build_depend>
+  <run_depend>control_msgs</run_depend>
+  <build_depend>diagnostic_msgs</build_depend>
+  <run_depend>diagnostic_msgs</run_depend>
+  <build_depend>geometric_shapes</build_depend>
+  <run_depend>geometric_shapes</run_depend>
+  <build_depend>geometry_msgs</build_depend>
+  <run_depend>geometry_msgs</run_depend>
+  <build_depend>interactive_markers</build_depend>
+  <run_depend>interactive_markers</run_depend>
+  <build_depend>manipulation_msgs</build_depend>
+  <run_depend>manipulation_msgs</run_depend>
+  <build_depend>moveit_core</build_depend>
+  <run_depend>moveit_core</run_depend>
+  <build_depend>moveit_msgs</build_depend>
+  <run_depend>moveit_msgs</run_depend>
+  <build_depend>moveit_ros_perception</build_depend>
+  <run_depend>moveit_ros_perception</run_depend>
+  <build_depend>moveit_ros_planning_interface</build_depend>
+  <run_depend>moveit_ros_planning_interface</run_depend>
+  <build_depend>moveit_visual_tools</build_depend>
+  <run_depend>moveit_visual_tools</run_depend>
+  <build_depend>pcl_conversions</build_depend>
+  <run_depend>pcl_conversions</run_depend>
+  <build_depend>pcl_ros</build_depend>
+  <run_depend>pcl_ros</run_depend>
+  <build_depend>pluginlib</build_depend>
+  <run_depend>pluginlib</run_depend>
+  <build_depend>rosbag</build_depend>
+  <run_depend>rosbag</run_depend>
+  <build_depend>roscpp</build_depend>
+  <run_depend>roscpp</run_depend>
+  <build_depend>rospy</build_depend>
+  <run_depend>rospy</run_depend>
+  <build_depend>sensor_msgs</build_depend>
+  <run_depend>sensor_msgs</run_depend>
+  <build_depend>shape_msgs</build_depend>
+  <run_depend>shape_msgs</run_depend>
+  <build_depend>std_msgs</build_depend>
+  <run_depend>std_msgs</run_depend>
+  <build_depend>std_srvs</build_depend>
+  <run_depend>std_srvs</run_depend>
+  <build_depend>tf</build_depend>
+  <run_depend>tf</run_depend>
+  <build_depend>tf2_eigen</build_depend>
+  <run_depend>tf2_eigen</run_depend>
+  <build_depend>tf2_geometry_msgs</build_depend>
+  <run_depend>tf2_geometry_msgs</run_depend>
+  <build_depend>tf2_ros</build_depend>
+  <run_depend>tf2_ros</run_depend>
+  <build_depend>trajectory_msgs</build_depend>
+  <run_depend>trajectory_msgs</run_depend>
+
+</package>
