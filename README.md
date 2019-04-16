@@ -16,6 +16,39 @@ A graphical user interface designed for trajectory programming by demonstration 
 ### Preparations
 * Install the [pcl_tracker](https://github.com/Zhang-Hongda/pcl_tracker) package and finish the preparation steps.
 * Follow the installation guidance in [universal_robot](https://github.com/ros-industrial/universal_robot) package. 
+* Add a new group_state named "forward".
+    ```
+roscd ur5_moveit_config/config
+sudo gedit ur5.srdf
+    ```
+append the following content to the file.
+```
+<group_state name="forward" group="manipulator">
+    <joint name="elbow_joint" value="1.5707" />
+    <joint name="shoulder_lift_joint" value="-1.5707" />
+    <joint name="shoulder_pan_joint" value="0" />
+    <joint name="wrist_1_joint" value="-1.5707" />
+    <joint name="wrist_2_joint" value="-1.5707" />
+    <joint name="wrist_3_joint" value="0" />
+</group_state>
+```
+* Modify the xacro file of UR5 robot. Append a fix link "pen" to "tool0" link.
+
+    ```
+roscd ur_description/urdf/
+sudo gedit ur5.urdf.xacro
+    ```
+    append the following content at the end of the file:
+    ```
+<xacro:property name="pen_length" value="0.125" />
+<link name="${prefix}pen"/>
+<joint name="${prefix}tool0_fixed_joint-pen_fixed_link" type="fixed">
+    <origin xyz="0 0 ${pen_length}" rpy="0 0 0"/>
+    <parent link="${prefix}tool0"/>
+    <child link="${prefix}pen"/>
+</joint>
+    ```
+    __NOTE: __Modify the value of "pen_length" parameter according to actual condition.
 * Install the [ur_modern_driver](https://github.com/Zhang-Hongda/ur_modern_driver) package if you are using a UR version 3.0 and above, and make sure the robot is well connected.
 * The implementation of the system requires a Kinectv2 sensor (Kinectv1 is fine but you may need to modify some of the files in the [src](./src) folder). 
 * The camera should be well calibrated and fixed on a shelf above the working platform (see also [iai_kinect2/kinect2_calibtation](https://github.com/code-iai/iai_kinect2/tree/master/kinect2_calibration)). 
