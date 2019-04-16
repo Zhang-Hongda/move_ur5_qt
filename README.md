@@ -83,8 +83,9 @@ The interface should look like this:
 
 ### videos
 * Trajectory programming by specifying five waypoints.
-* [![T-RPD](https://img.youtube.com/vi/F18YgKlDluw/0.jpg)](https://www.youtube.com/watch?v=F18YgKlDluw)
-
+    * [![experiment viedo](https://img.youtube.com/vi/F18YgKlDluw/0.jpg)](https://www.youtube.com/watch?v=F18YgKlDluw)
+* Trajectory programming with a continuous curves
+    * [![experiment viedo](https://img.youtube.com/vi/F18YgKlDluw/0.jpg)](https://www.youtube.com/watch?v=F18YgKlDluw)
 
 
 
