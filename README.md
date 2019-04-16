@@ -34,7 +34,7 @@ Step 3: activate the workspace
 ```
 source ${PATH_TO YOUR_WORKSPACE_FOLDER}/devel/setup.bash
 ```
-### Usage 
+### Strat 
 To start the program, first run:
 ```
 roslaunch pcl_tracker demo.launch
@@ -47,7 +47,31 @@ roslaunch move_ur5_qt move_ur5_qt.launch
 The interface should look like this:
 ![robotinfotab.png](./png/robotinfotab.png "robot info tab")
 ![sceneinfotab.png](./png/sceneinfotab.png "scene info tab")
-
+### Usage
+*  The "__Robot Info__" tag displays information about the status of the robot and information concerning motion planning and execution
+*  The "__Scene Info__" tag displays information about the pose of the marker in robot's frame and information concerning trajectory demonstration.
+*  The command panel on the right allows users to control the trajectory programming process.
+    * The "__Ros Master__" panel
+        * Users can specify the __url__ and __ip__ for connecting the ros master.
+        * Check "__Use environment variables__" if you want to use the environmental configuration of your computer (recommended).
+        * Check "__Remember settings on stratup__" to allows the system to load the current configuration during startup next time.
+        * 
+    * The "__RPD Control Panel__"
+        * To strat the tracking process, check the "__Start Tracking__" button.
+        * The __frequency__ of capturing the tf messages of the marker can be modified in the spinbox (default value is 1 Hz).
+        * To record the trajectory of the moving marker, click on "__Record__" button and move the marker along the desired trajectory.
+        * Pause the recording process by clicking on "__Stop__" button.
+        * Click "__Finish__" to indicate the termination of the trajectory demonstration process.
+        * Check "__Use timer__" to allows the system to terminate the recording process automatically after countdown. The time of the countdown can be modified in the spinbox.
+    * The "__Plan and Execute__" panel
+        * After finishing the step of trajectory demonstration, users can plan and execute the recorded trajectory by clicking "__Plan__" and "__Execute__".
+        * The motion planning and execution are implemented through [moveIT](https://moveit.ros.org/).
+        * Check "__Threshold__" to set a threshold for the completion rate of the motion planning (default value is 80%).
+    * The "__Save and Load__" panel
+        * Users can save the recorded trajectory in a .xml file.
+        * Users can load the trajectory file by clicking on the "__Load file__" button.
+        * Modify the path in "__Save to file__" to specify the path for saving trajectory files.
+        * If the path in "__Save to file__" is empty, a dialog will show up to help you find a path for saving files.
 
 
 
