@@ -83,7 +83,7 @@ The interface should look like this:
 
 ### videos
 * Trajectory programming by specifying five waypoints.
-
+[![]()](https://youtu.be/F18YgKlDluw "A robot trajectory programming by demonstration system based on ROS")
 
 
 
