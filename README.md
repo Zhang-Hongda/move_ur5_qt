@@ -71,11 +71,10 @@ The interface should look like this:
         * Users can save the recorded trajectory in a .xml file.
         ![test_trajectory.png](./png/test_trajectory.png "test_trajectory")
         * Users can load the trajectory file by clicking on the "__Load file__" button.
-        * Modify the path in "__Save to file__" to specify the path for saving trajectory files.
-        ![savefile.png](./png/savefile.png "savefile")
-        * If the path in "__Save to file__" is empty, a dialog will show up to help you find a path for saving files.
         ![loadfile.png](./png/loadfile.png "loadfile")
-        
+        * Modify the path in "__Save to file__" to specify the path for saving trajectory files.
+        * If the path in "__Save to file__" is empty, a dialog will show up to help you find a path for saving files.
+        ![savefile.png](./png/savefile.png "savefile")        
 
 
 
