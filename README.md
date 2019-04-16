@@ -19,7 +19,7 @@ A graphical user interface designed for trajectory programming by demonstration 
 * Install the [ur_modern_driver](https://github.com/Zhang-Hongda/ur_modern_driver) package if you are using a UR version 3.0 and above, and make sure the robot is well connected.
 * The implementation of the system requires a Kinectv2 sensor (Kinectv1 is fine but you may need to modify some of the files in the [src](./src) folder). 
 * The camera should be well calibrated and fixed on a shelf above the working platform (see also [iai_kinect2/kinect2_calibtation](https://github.com/code-iai/iai_kinect2/tree/master/kinect2_calibration)). 
-* The extrinsic parameters of the camera in the frame of UR's base link shoud be published through tf messages (see also [tf_base2camera](https://github.com/Zhang-Hongda/tf_base2camera) and [transform_publisher](https://github.com/Zhang-Hongda/transform_publisher)).
+* The extrinsic parameters of the camera in the frame of UR's base link shoud be published through tf messages. (see also [tf_base2camera](https://github.com/Zhang-Hongda/tf_base2camera) and [transform_publisher](https://github.com/Zhang-Hongda/transform_publisher)). 
 ### Installation
 Step 1: clone the repository into your own workspace
 ```
@@ -37,8 +37,10 @@ source ${PATH_TO YOUR_WORKSPACE_FOLDER}/devel/setup.bash
 ### Strat 
 To start the program, first run:
 ```
-roslaunch pcl_tracker demo.launch
+roslaunch pcl_tracker demo.launch 
 ```
+__NOTE:__ Modify the launch file if you don't want to use the [transform_publisher](https://github.com/Zhang-Hongda/transform_publisher) package to publish the extrinsic parameters.  
+
 Then run:
 ```
 roslaunch move_ur5_qt move_ur5_qt.launch
