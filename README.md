@@ -1,4 +1,4 @@
-README
+move_ur5_qt
 ==============================
 
 ****
@@ -7,8 +7,12 @@ README
 |E-mail|2210010444@qq.com|
 |Institute|Harbin Institute of Technology|
 ****
-# move_ur5_qt
+
+### Description
 A graphical user interface designed for trajectory programming by demonstration for UR5 robot.
+### Dependencies
+- ROS kinetic
+- Qt 5.9.1
 ### Installation
 Step 1: clone the repository into your own workspace
 ```
@@ -29,3 +33,5 @@ source ${PATH_TO YOUR_WORKSPACE_FOLDER}/devel/setup.bash
 * Install the [ur_modern_driver](https://github.com/Zhang-Hongda/ur_modern_driver) package if you are using a UR version 3.0 and above, and make sure the robot is well connected.
 * The implementation of the system requires a Kinectv2 sensor (Kinectv1 is fine but you may need to modify some of the files in the [src](./src) folder). 
 * The camera should be well calibrated and fixed on a shelf above the working platform (see also [iai_kinect2/kinect2_calibtation](https://github.com/code-iai/iai_kinect2/tree/master/kinect2_calibration)). 
+* The extrinsic parameters of the camera in the frame of UR's base link shoud be published through tf messages.
+
