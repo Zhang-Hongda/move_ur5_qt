@@ -75,7 +75,14 @@ The interface should look like this:
         * Modify the path in "__Save to file__" to specify the path for saving trajectory files.
         * If the path in "__Save to file__" is empty, a dialog will show up to help you find a path for saving files.
         ![savefile.png](./png/savefile.png "savefile")        
+    * The "__Scene Objects__" panel
+        * This panel allows users to add and delete collison objects in moveIT planning space.
+        * By default, the system adds a table and a shelf in the space, but you may need to modify the models according to your own situation (a tutorial can be found at [Planning Scene ROS API](http://docs.ros.org/kinetic/api/moveit_tutorials/html/doc/planning_scene_ros_api/planning_scene_ros_api_tutorial.html#getting-started)).
+        * The "New Objects" and "Load Objects" functions are currently in developing, which will allow users to draw 3D collision objects and place the objects in the planning space.
+        * To avoid collision, you can also use [octomap](http://wiki.ros.org/octomap).
 
+### videos
+* Trajectory programming by specifying five waypoints.
 
 
 
