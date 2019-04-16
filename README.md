@@ -24,4 +24,6 @@ Step 3: activate the workspace
 source ${PATH_TO YOUR_WORKSPACE_FOLDER}/devel/setup.bash
 ```
 ### Preparations
-* Install the [pcl_tracker](https://github.com/Zhang-Hongda/pcl_tracker) package and finish the preparation steps in README.
+* Install the [pcl_tracker](https://github.com/Zhang-Hongda/pcl_tracker) package and finish the preparation steps.
+* Follow the installation guidance in [universal_robot](https://github.com/ros-industrial/universal_robot) package. 
+* Install the [ur_modern_driver](https://github.com/Zhang-Hongda/ur_modern_driver) package if you are using a UR version 3.0 and above, and make sure the robot is well connected.
