@@ -84,6 +84,7 @@ The interface should look like this:
 ### videos
 * Trajectory programming by specifying five waypoints.
 <iframe width="858" height="483" src="https://www.youtube.com/embed/F18YgKlDluw" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+[![T-RPD](https://www.youtube.com/embed/F18YgKlDluw/0.jpg)](https://www.youtube.com/embed/F18YgKlDluw)
 
 
 
