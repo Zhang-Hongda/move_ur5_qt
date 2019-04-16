@@ -34,5 +34,31 @@ Step 3: activate the workspace
 ```
 source ${PATH_TO YOUR_WORKSPACE_FOLDER}/devel/setup.bash
 ```
+### Usage 
+To start the program, first run:
+```
+roslaunch pcl_tracker demo.launch
+```
+Then run:
+```
+roslaunch move_ur5_qt move_ur5_qt.launch
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
