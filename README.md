@@ -22,5 +22,6 @@ catkin_make
 Step 3: activate the workspace
 ```
 source ${PATH_TO YOUR_WORKSPACE_FOLDER}/devel/setup.bash
+```
 ### Preparations
-* Install the pcl_tracker package and follow the preparation steps in README.
+* Install the [pcl_tracker](../pcl_tracker) package and finish the preparation steps in README.
