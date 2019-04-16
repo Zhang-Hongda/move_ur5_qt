@@ -14,8 +14,6 @@ Step 1: clone the repository into your own workspace
 ```
 cd ${PATH_TO YOUR_WORKSPACE_FOLDER}/src
 git clone https://github.com/Zhang-Hongda/move_ur5_qt
-#The package also depends on the pcl_tracker package
-git clone https://github.com/Zhang-Hongda/pcl_tracker
 ```
 Step 2: building
 ```
@@ -25,3 +23,4 @@ Step 3: activate the workspace
 ```
 source ${PATH_TO YOUR_WORKSPACE_FOLDER}/devel/setup.bash
 ### Preparations
+* Install the pcl_tracker package and follow the preparation steps in README.
