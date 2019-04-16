@@ -21,7 +21,7 @@ A graphical user interface designed for trajectory programming by demonstration 
     roscd ur5_moveit_config/config
     sudo gedit ur5.srdf
     ```
-    append the following content to the file.
+    append the following contents to the file.
     ```
     <group_state name="forward" group="manipulator">
         <joint name="elbow_joint" value="1.5707" />
@@ -38,7 +38,7 @@ A graphical user interface designed for trajectory programming by demonstration 
     roscd ur_description/urdf/
     sudo gedit ur5.urdf.xacro
     ```
-    append the following content at the end of the file:
+    append the following contents at the end of the file:
     ```
     <xacro:property name="pen_length" value="0.125" />
     <link name="${prefix}pen"/>
