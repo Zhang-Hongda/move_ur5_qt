@@ -43,8 +43,10 @@ Then run:
 ```
 roslaunch move_ur5_qt move_ur5_qt.launch
 ```
-
-
+### GUI
+The interface should look like this:
+![robotinfotab.png](./png/robotinfotab.png "robot info tab")
+![sceneinfotab.png](./png/sceneinfotab.png "scene info tab")
 
 
 
