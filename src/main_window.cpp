@@ -8,6 +8,7 @@
 #include "../include/move_ur5_qt/qnode.hpp"
 #include "../include/move_ur5_qt/tf_listener.hpp"
 #include "../include/move_ur5_qt/timer.hpp"
+#include "../include/move_ur5_qt/gesture_handler.hpp"
 #include "../include/move_ur5_qt/trajectoryxmlwriter.hpp"
 #include "../include/move_ur5_qt/trajectoryxmlreader.hpp"
 
@@ -24,6 +25,19 @@ extern int frequency;
 
 extern QMutex t_mutex;
 extern bool istimeup;
+
+extern QMutex G_mutex;
+extern bool isEnable;
+
+inline bool getisEnable() {
+  QMutexLocker locker(&G_mutex);
+  return isEnable;
+}
+
+inline void setisEnable(bool sign) {
+  QMutexLocker locker(&G_mutex);
+  isEnable = sign;
+}
 
 inline bool readstopSigen() {
   QMutexLocker locker(&m_mutex);
@@ -70,7 +84,8 @@ MainWindow::MainWindow(int argc, char **argv, QWidget *parent)
       listener(),
       timer(),
       writer(),
-      reader() {
+      reader(),
+      gesture_handler() {
   ui.setupUi(this);   // Calling this incidentally connects all ui's triggers to
                       // on_...() callbacks in this class.
   ros::Time::init();  // Initialize ros time first or it may crash
@@ -157,6 +172,23 @@ MainWindow::MainWindow(int argc, char **argv, QWidget *parent)
   **********************/
   QObject::connect(&qnode, SIGNAL(planningFinished(float)), this,
                    SLOT(update_progressBar_R(float)));
+  /*********************
+  ** HGR
+  **********************/
+  QObject::connect(&gesture_handler, SIGNAL(recordstart(bool)), ui.pushButton_R,
+                   SLOT(setChecked(bool)));
+  QObject::connect(&gesture_handler, SIGNAL(recordstop(bool)), ui.pushButton_R,
+                   SLOT(setChecked(bool)));
+  QObject::connect(&gesture_handler, SIGNAL(recordfinish(bool)),
+                   ui.pushButton_F, SLOT(setChecked(bool)));
+  QObject::connect(&gesture_handler, SIGNAL(recordrestart(bool)),
+                   ui.pushButton_F, SLOT(setChecked(bool)));
+  QObject::connect(&gesture_handler, SIGNAL(plan()), ui.pushButton_P,
+                   SLOT(click()));
+  QObject::connect(&gesture_handler, SIGNAL(execut()), ui.pushButton_E,
+                   SLOT(click()));
+  QObject::connect(&gesture_handler, SIGNAL(planandexecut()), ui.pushButton_PE,
+                   SLOT(click()));
 }
 
 MainWindow::~MainWindow() {}
@@ -503,9 +535,11 @@ void move_ur5_qt::MainWindow::update_progressBar_R(float rate) {
   if (rate < ui.spinBox_Rate->value()) {
     qnode.log(qnode.Fatal, "FAILED!");
     ui.pushButton_E->setEnabled(false);
+    ui.pushButton_PE->setEnabled(false);
   } else {
     qnode.log(qnode.Info, "SUCCESS!");
     ui.pushButton_E->setEnabled(true);
+    ui.pushButton_PE->setEnabled(true);
   }
 }
 
@@ -591,4 +625,21 @@ void move_ur5_qt::MainWindow::on_pushButton_LF_clicked() {
     listener.log(listener.Fatal, "FAILED! File not load!");
     return;
   }
+}
+
+void move_ur5_qt::MainWindow::on_pushButton_EGC_toggled(bool checked) {
+  if (checked) {
+    ui.pushButton_EGC->setText("Disable Gesture Control");
+    setisEnable(true);
+    gesture_handler.init();
+  } else {
+    setisEnable(false);
+    ui.pushButton_EGC->setText("Enable Gesture Control");
+  }
+}
+
+void move_ur5_qt::MainWindow::on_pushButton_PE_clicked() {
+  ui.pushButton_P->click();
+  sleep(1);
+  ui.pushButton_E->click();
 }

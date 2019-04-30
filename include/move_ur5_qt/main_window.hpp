@@ -10,6 +10,7 @@
 #include "qnode.hpp"
 #include "tf_listener.hpp"
 #include "timer.hpp"
+#include "gesture_handler.hpp"
 #include "trajectoryxmlwriter.hpp"
 #include "trajectoryxmlreader.hpp"
 /*****************************************************************************
@@ -87,6 +88,10 @@ class MainWindow : public QMainWindow {
 
   void on_pushButton_LF_clicked();
 
+  void on_pushButton_EGC_toggled(bool checked);
+
+  void on_pushButton_PE_clicked();
+
 Q_SIGNALS:
   void startTracking();
 
@@ -95,6 +100,7 @@ Q_SIGNALS:
   QNode qnode;
   Tf_listener listener;
   Timer timer;
+  Gesture_handler gesture_handler;
   std::vector<geometry_msgs::Pose> waypoints;
   trajectoryXMLWriter writer;
   trajectoryXMLReader reader;

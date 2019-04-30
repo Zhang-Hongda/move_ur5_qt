@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1062</width>
-    <height>884</height>
+    <width>1119</width>
+    <height>987</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -344,7 +344,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1062</width>
+     <width>1119</width>
      <height>23</height>
     </rect>
    </property>
@@ -370,8 +370,8 @@
    </property>
    <property name="minimumSize">
     <size>
-     <width>363</width>
-     <height>838</height>
+     <width>426</width>
+     <height>941</height>
     </size>
    </property>
    <property name="allowedAreas">
@@ -388,7 +388,7 @@
      <item>
       <widget class="QFrame" name="frame">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -771,6 +771,31 @@
              </property>
             </widget>
            </item>
+           <item row="1" column="1">
+            <widget class="QPushButton" name="pushButton_P">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="toolTip">
+              <string>Plan.</string>
+             </property>
+             <property name="statusTip">
+              <string>Plan.</string>
+             </property>
+             <property name="whatsThis">
+              <string>Plan.</string>
+             </property>
+             <property name="text">
+              <string>Plan</string>
+             </property>
+             <property name="shortcut">
+              <string>Ctrl+P</string>
+             </property>
+            </widget>
+           </item>
            <item row="1" column="0">
             <widget class="QSpinBox" name="spinBox_Rate">
              <property name="sizePolicy">
@@ -824,32 +849,14 @@
              </property>
             </widget>
            </item>
-           <item row="1" column="1">
-            <widget class="QPushButton" name="pushButton_P">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="toolTip">
-              <string>Plan.</string>
-             </property>
-             <property name="statusTip">
-              <string>Plan.</string>
-             </property>
-             <property name="whatsThis">
-              <string>Plan.</string>
-             </property>
+           <item row="1" column="3">
+            <widget class="QPushButton" name="pushButton_PE">
              <property name="text">
-              <string>Plan</string>
-             </property>
-             <property name="shortcut">
-              <string>Ctrl+P</string>
+              <string>Plan and Execute</string>
              </property>
             </widget>
            </item>
-           <item row="1" column="2" colspan="2">
+           <item row="1" column="2">
             <widget class="QPushButton" name="pushButton_E">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -962,28 +969,6 @@
            <string>Scene Objects</string>
           </property>
           <layout class="QGridLayout" name="gridLayout_7">
-           <item row="0" column="0">
-            <widget class="QPushButton" name="pushButton_PO">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="toolTip">
-              <string>Publish Objects</string>
-             </property>
-             <property name="statusTip">
-              <string>Publish Objects</string>
-             </property>
-             <property name="whatsThis">
-              <string>Publish Objects</string>
-             </property>
-             <property name="text">
-              <string>Publish Objects</string>
-             </property>
-            </widget>
-           </item>
            <item row="0" column="1">
             <widget class="QPushButton" name="pushButton_CO">
              <property name="sizePolicy">
@@ -1006,7 +991,36 @@
              </property>
             </widget>
            </item>
+           <item row="0" column="0">
+            <widget class="QPushButton" name="pushButton_PO">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="toolTip">
+              <string>Publish Objects</string>
+             </property>
+             <property name="statusTip">
+              <string>Publish Objects</string>
+             </property>
+             <property name="whatsThis">
+              <string>Publish Objects</string>
+             </property>
+             <property name="text">
+              <string>Publish Objects</string>
+             </property>
+            </widget>
+           </item>
            <item row="1" column="0">
+            <widget class="QPushButton" name="pushButton_LO">
+             <property name="text">
+              <string>Load Objects</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
             <widget class="QPushButton" name="pushButton_NO">
              <property name="toolTip">
               <string>Add new objects.</string>
@@ -1022,28 +1036,33 @@
              </property>
             </widget>
            </item>
-           <item row="1" column="1">
-            <widget class="QPushButton" name="pushButton_LO">
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="groupBox_hgr">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="title">
+           <string>HGR Control</string>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_6">
+           <item>
+            <widget class="QPushButton" name="pushButton_EGC">
              <property name="text">
-              <string>Load Objects</string>
+              <string>Enable Gesture Control</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
              </property>
             </widget>
            </item>
           </layout>
          </widget>
-        </item>
-        <item>
-         <spacer name="verticalSpacer">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>40</height>
-           </size>
-          </property>
-         </spacer>
         </item>
        </layout>
       </widget>
@@ -1051,7 +1070,7 @@
      <item>
       <widget class="QPushButton" name="quit_button">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -1069,6 +1088,19 @@
         <string>Quit</string>
        </property>
       </widget>
+     </item>
+     <item>
+      <spacer name="verticalSpacer">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
      </item>
     </layout>
    </widget>
