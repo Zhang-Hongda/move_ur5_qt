@@ -1,0 +1,8 @@
+<launch>
+	<arg name="topic" default="/kinect2/qhd/points"/>
+	<include file="$(find pcl_tracker)/launch/demo.launch">
+		<arg name="topic" value="/kinect2/qhd/points"/>
+	</include>
+	<include file="$(find move_ur5_qt)/launch/move_ur5_qt.launch"/>
+	<include file="$(find cnn_hgr)/launch/HGR.launch"/>
+</launch>
