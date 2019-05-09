@@ -2,7 +2,7 @@ move_ur5_qt
 ==============================
 
 ****
-|Author|ZhangHongda|
+|Author|Zhang Hongda|
 |------|-----------------|
 |E-mail|2210010444@qq.com|
 |Institute|Harbin Institute of Technology|
@@ -118,11 +118,11 @@ The interface should look like this:
 
 ### videos
 * A quick guidance of the developed system.
-    * [![experiment viedo](https://img.youtube.com/vi/YASbjS_zb-g/0.jpg)](https://www.youtube.com/watch?v=YASbjS_zb-g)
+     [![experiment viedo](https://img.youtube.com/vi/YASbjS_zb-g/0.jpg)](https://www.youtube.com/watch?v=YASbjS_zb-g)
 * Trajectory programming by specifying five waypoints.
-    * [![experiment viedo](https://img.youtube.com/vi/F18YgKlDluw/0.jpg)](https://www.youtube.com/watch?v=F18YgKlDluw)
+     [![experiment viedo](https://img.youtube.com/vi/F18YgKlDluw/0.jpg)](https://www.youtube.com/watch?v=F18YgKlDluw)
 * Trajectory programming with a continuous curves
-    * [![experiment viedo](https://img.youtube.com/vi/5dFEKOuHhTA/0.jpg)](https://www.youtube.com/watch?v=5dFEKOuHhTA)
+     [![experiment viedo](https://img.youtube.com/vi/5dFEKOuHhTA/0.jpg)](https://www.youtube.com/watch?v=5dFEKOuHhTA)
 
 
 
