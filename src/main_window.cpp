@@ -647,15 +647,15 @@ void move_ur5_qt::MainWindow::on_pushButton_PE_clicked() {
 }
 
 void move_ur5_qt::MainWindow::on_gestureRestart_preformed(bool checked) {
-	if(ui.pushButton_R->isChecked()){
-		ui.pushButton_R->setChecked(false);
-		ui.pushButton_F->setChecked(true);
-		ui.pushButton_F->setChecked(false);
-	}else{
-		ui.pushButton_F->setChecked(true);
-		ui.pushButton_F->setChecked(false);
-	}
-	if(ui.pushButton_F->isChecked()){
-		ui.pushButton_F->setChecked(false);
-	}
+    if(ui.pushButton_R->isChecked()){
+        ui.pushButton_R->setChecked(false);
+      ui.pushButton_F->setChecked(true);
+        ui.pushButton_F->setChecked(false);
+    }else{
+        ui.pushButton_F->setChecked(true);
+        ui.pushButton_F->setChecked(false);
+    }
+    if(ui.pushButton_F->isChecked()){
+        ui.pushButton_F->setChecked(false);
+    }
 }
