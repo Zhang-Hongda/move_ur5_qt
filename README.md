@@ -48,7 +48,7 @@ A graphical user interface designed for trajectory programming by demonstration 
         <child link="${prefix}pen"/>
     </joint>
     ```
-    __NOTE: __Modify the value of "pen_length" parameter according to actual condition.
+__NOTE:__ Modify the value of "pen_length" parameter according to actual condition.
 * Install the [ur_modern_driver](https://github.com/Zhang-Hongda/ur_modern_driver) package if you are using a UR version 3.0 and above, and make sure the robot is well connected.
 * The implementation of the system requires a Kinectv2 sensor (Kinectv1 is fine but you may need to modify some of the files in the [src](./src) folder). 
 * The camera should be well calibrated and fixed on a shelf above the working platform (see also [iai_kinect2/kinect2_calibtation](https://github.com/code-iai/iai_kinect2/tree/master/kinect2_calibration)). 
@@ -72,7 +72,7 @@ To start the program, first run:
 ```
 roslaunch pcl_tracker demo.launch 
 ```
-__NOTE:__ Modify the launch file if you don't want to use the [transform_publisher](https://github.com/Zhang-Hongda/transform_publisher) package to publish the extrinsic parameters.  
+__NOTE:__  Modify the launch file if you don't want to use the [transform_publisher](https://github.com/Zhang-Hongda/transform_publisher) package to publish the extrinsic parameters.  
 
 Then run:
 ```
