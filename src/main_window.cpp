@@ -407,6 +407,7 @@ void move_ur5_qt::MainWindow::disableAllwidgets() {
   ui.groupBox_PE->setEnabled(false);
   ui.quit_button->setEnabled(false);
   ui.groupBox_SL->setEnabled(false);
+  ui.groupBox_hgr->setEnabled(false);
 }
 
 void move_ur5_qt::MainWindow::enableAllwidgets() {
@@ -419,6 +420,7 @@ void move_ur5_qt::MainWindow::enableAllwidgets() {
   ui.quit_button->setEnabled(true);
   ui.groupBox_SL->setEnabled(true);
   ui.pushButton_F->setEnabled(false);
+  ui.groupBox_hgr->setEnabled(true);
 }
 
 void move_ur5_qt::MainWindow::recordMarkerposition(geometry_msgs::Pose pose) {
