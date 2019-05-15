@@ -1,26 +1,27 @@
 /*****************************************************************************
 ** Includes
 *****************************************************************************/
-#include <ros/ros.h>
-#include <ros/network.h>
-#include <visualization_msgs/Marker.h>
-#include <string>
-#include <sstream>
-#include <QtDebug>
 #include <math.h>
+#include <ros/network.h>
+#include <ros/ros.h>
+#include <visualization_msgs/Marker.h>
+#include <QtDebug>
+#include <sstream>
+#include <string>
 #include "../include/move_ur5_qt/qnode.hpp"
 
 /*****************************************************************************
 ** Namespaces
 *****************************************************************************/
 
-namespace move_ur5_qt {
-
+namespace move_ur5_qt
+{
 /*****************************************************************************
 ** Implementation
 *****************************************************************************/
-inline std::vector<moveit_msgs::CollisionObject> addTable_Shlef(
-    moveit::planning_interface::MoveGroupInterface &move_group) {
+inline std::vector<moveit_msgs::CollisionObject>
+addTable_Shlef(moveit::planning_interface::MoveGroupInterface &move_group)
+{
   std::vector<moveit_msgs::CollisionObject> collision_objects;
   moveit_msgs::CollisionObject object_table;
   object_table.header.frame_id = move_group.getPlanningFrame();
@@ -81,19 +82,21 @@ inline std::vector<moveit_msgs::CollisionObject> addTable_Shlef(
   collision_objects.push_back(object_shelf);
   return collision_objects;
 }
-inline bool moveToNamedTarget(
-    moveit::planning_interface::MoveGroupInterface &move_group,
-    std::string name) {
+inline bool moveToNamedTarget(moveit::planning_interface::MoveGroupInterface &move_group, std::string name)
+{
   move_group.setStartStateToCurrentState();
   move_group.setNamedTarget(name);
-  if (move_group.move()) {
+  if (move_group.move())
+  {
     return true;
-  } else {
+  }
+  else
+  {
     return false;
   }
 }
-inline moveit_msgs::ObjectColor setColor(std::string name, float r, float g,
-                                         float b, float a = 0.9f) {
+inline moveit_msgs::ObjectColor setColor(std::string name, float r, float g, float b, float a = 0.9f)
+{
   moveit_msgs::ObjectColor color;
   color.id = name;
   color.color.r = r;
@@ -102,7 +105,8 @@ inline moveit_msgs::ObjectColor setColor(std::string name, float r, float g,
   color.color.a = a;
   return color;
 }
-inline geometry_msgs::Pose transform2pose(tf::StampedTransform transform) {
+inline geometry_msgs::Pose transform2pose(tf::StampedTransform transform)
+{
   geometry_msgs::Pose pose;
   pose.position.x = transform.getOrigin().getX();
   pose.position.y = transform.getOrigin().getY();
@@ -114,10 +118,14 @@ inline geometry_msgs::Pose transform2pose(tf::StampedTransform transform) {
   return pose;
 }
 
-QNode::QNode(int argc, char **argv) : init_argc(argc), init_argv(argv) {}
+QNode::QNode(int argc, char **argv) : init_argc(argc), init_argv(argv)
+{
+}
 
-QNode::~QNode() {
-  if (ros::isStarted()) {
+QNode::~QNode()
+{
+  if (ros::isStarted())
+  {
     ros::shutdown();  // explicitly needed since we use ros::start();
     ros::waitForShutdown();
   }
@@ -125,56 +133,55 @@ QNode::~QNode() {
 }
 
 // Init ros node
-bool QNode::init() {
+bool QNode::init()
+{
   ros::init(init_argc, init_argv, "move_ur5_qt");
-  if (!ros::master::check()) {
+  if (!ros::master::check())
+  {
     return false;
   }
   ros::start();  // explicitly needed
-  node_handle = std::make_shared<ros::NodeHandle>();
-  planning_scene_diff_publisher =
-      node_handle->advertise<moveit_msgs::PlanningScene>("planning_scene", 1);
-  marker_pub = node_handle->advertise<visualization_msgs::Marker>(
-      "visualization_marker", 1);
+  node_handle = std::make_shared<ros::NodeHandle>("~");
+  planning_scene_diff_publisher = node_handle->advertise<moveit_msgs::PlanningScene>("planning_scene", 1);
+  marker_pub = node_handle->advertise<visualization_msgs::Marker>("visualization_marker", 1);
   start();
   return true;
 }
 
-bool QNode::init(const std::string &master_url, const std::string &host_url) {
+bool QNode::init(const std::string &master_url, const std::string &host_url)
+{
   std::map<std::string, std::string> remappings;
   remappings["__master"] = master_url;
   remappings["__hostname"] = host_url;
   ros::init(remappings, "move_ur5_qt");
 
-  if (!ros::master::check()) {
+  if (!ros::master::check())
+  {
     return false;
   }
   ros::start();  // explicitly needed
-  node_handle = std::make_shared<ros::NodeHandle>();
-  planning_scene_diff_publisher =
-      node_handle->advertise<moveit_msgs::PlanningScene>("planning_scene", 1);
-  marker_pub = node_handle->advertise<visualization_msgs::Marker>(
-      "visualization_marker", 1);
+  node_handle = std::make_shared<ros::NodeHandle>("~");
+  planning_scene_diff_publisher = node_handle->advertise<moveit_msgs::PlanningScene>("planning_scene", 1);
+  marker_pub = node_handle->advertise<visualization_msgs::Marker>("visualization_marker", 1);
 
   start();
   return true;
 }
 
 // Tracking robot state and update the information
-void QNode::run() {
+void QNode::run()
+{
   ros::AsyncSpinner spinner(1);
   spinner.start();
   std::string EndEffectorLink;
   node_handle->param<std::string>("EndEffectorLink", EndEffectorLink, "tool0");
-  move_group = std::make_shared<moveit::planning_interface::MoveGroupInterface>(
-      PLANNING_GROUP);
+  move_group = std::make_shared<moveit::planning_interface::MoveGroupInterface>(PLANNING_GROUP);
   move_group->setPoseReferenceFrame("base_link");
   move_group->setEndEffectorLink(EndEffectorLink);
   move_group->allowReplanning(true);
   move_group->setGoalPositionTolerance(0.01);
   move_group->setGoalOrientationTolerance(0.05);
-  planning_scene_interface =
-      std::make_shared<moveit::planning_interface::PlanningSceneInterface>();
+  planning_scene_interface = std::make_shared<moveit::planning_interface::PlanningSceneInterface>();
 
   sleep(3);  // wait for planning scene interface initialization
   objects_id.push_back("table");
@@ -187,7 +194,8 @@ void QNode::run() {
   Q_EMIT
   addObjectsFinished();
   log(Info, "Tracking robot status.");
-  while (ros::ok()) {
+  while (ros::ok())
+  {
     updatePositon();
     updateOrientation();
     updateJointvalues();
@@ -199,7 +207,8 @@ void QNode::run() {
 }
 
 // Publish line
-void QNode::publishMarkerposition(std::vector<geometry_msgs::Pose> waypoints) {
+void QNode::publishMarkerposition(std::vector<geometry_msgs::Pose> waypoints)
+{
   visualization_msgs::Marker line_strip;
   line_strip.header.frame_id = "/base_link";
   line_strip.header.stamp = ros::Time::now();
@@ -209,8 +218,8 @@ void QNode::publishMarkerposition(std::vector<geometry_msgs::Pose> waypoints) {
   line_strip.color.a = 1.0;
   line_strip.scale.x = 0.01;
   line_strip.type = visualization_msgs::Marker::LINE_STRIP;
-  for (std::vector<geometry_msgs::Pose>::const_iterator it = waypoints.begin();
-       it != waypoints.end(); it++) {
+  for (std::vector<geometry_msgs::Pose>::const_iterator it = waypoints.begin(); it != waypoints.end(); it++)
+  {
     geometry_msgs::Point p;
     p.x = it->position.x;
     p.y = it->position.y;
@@ -221,21 +230,24 @@ void QNode::publishMarkerposition(std::vector<geometry_msgs::Pose> waypoints) {
 }
 
 // Move robot to a named target
-void QNode::move_Forward() {
+void QNode::move_Forward()
+{
   if (moveToNamedTarget(*move_group, "forward"))
     log(Info, "Move Forward: SUCCEEDED");
   else
     log(Info, "Move Forward: FAILED");
 }
 
-void QNode::move_Up() {
+void QNode::move_Up()
+{
   if (moveToNamedTarget(*move_group, "up"))
     log(Info, "Move Up: SUCCEEDED");
   else
     log(Info, "Move Up: FAILED");
 }
 
-void QNode::move_Home() {
+void QNode::move_Home()
+{
   if (moveToNamedTarget(*move_group, "home"))
     log(Info, "Move Home: SUCCEEDED");
   else
@@ -243,48 +255,52 @@ void QNode::move_Home() {
 }
 
 // Clear robot status log
-void QNode::clearRobotstatusview(int except) {
+void QNode::clearRobotstatusview(int except)
+{
   logging_model.removeRows(0, logging_model.rowCount() - except);
 }
 
 // Add or remove cllision objects
-void QNode::addObjects() {
+void QNode::addObjects()
+{
   log(Info, "Add objects into the world");
   planning_scene_interface->addCollisionObjects(collision_objects);
   planning_scene_diff_publisher.publish(p);
 }
 
-void QNode::removeObjects() {
+void QNode::removeObjects()
+{
   log(Info, "Remove objects");
   planning_scene_interface->removeCollisionObjects(objects_id);
 }
 
 // Update robot status
-void QNode::updatePositon() {
+void QNode::updatePositon()
+{
   geometry_msgs::Pose pose = move_group->getCurrentPose().pose;
   std::stringstream ss;
-  ss << "x: " << pose.position.x << " y: " << pose.position.y
-     << " z: " << pose.position.z;
+  ss << "x: " << pose.position.x << " y: " << pose.position.y << " z: " << pose.position.z;
   Q_EMIT
   positionUpdated(ss.str());
   ss.str("");
 }
 
-void QNode::updateOrientation() {
+void QNode::updateOrientation()
+{
   geometry_msgs::Pose pose = move_group->getCurrentPose().pose;
   std::stringstream ss;
-  ss << "qx: " << pose.orientation.x << " qy: " << pose.orientation.y
-     << " qz: " << pose.orientation.z << " qw: " << pose.orientation.w;
+  ss << "qx: " << pose.orientation.x << " qy: " << pose.orientation.y << " qz: " << pose.orientation.z
+     << " qw: " << pose.orientation.w;
   Q_EMIT
   orientationUpdated(ss.str());
   ss.str("");
 }
 
-void QNode::updateJointvalues() {
+void QNode::updateJointvalues()
+{
   std::vector<double> jointvalues = move_group->getCurrentJointValues();
   std::stringstream ss;
-  for (std::vector<double>::iterator it = jointvalues.begin();
-       it != jointvalues.end(); it++)
+  for (std::vector<double>::iterator it = jointvalues.begin(); it != jointvalues.end(); it++)
     ss << *it << " ";
   Q_EMIT
   jointvaluesUpdated(ss.str());
@@ -292,13 +308,13 @@ void QNode::updateJointvalues() {
 }
 
 // Plan trajectory
-void QNode::planTrajectory(std::vector<geometry_msgs::Pose> waypoints) {
+void QNode::planTrajectory(std::vector<geometry_msgs::Pose> waypoints)
+{
   log(Info, "Planning...");
   move_group->setMaxVelocityScalingFactor(0.5);  // jonit speed control
   const double jump_threshold = 0.0;
   const double eef_step = 0.005;
-  double rate = move_group->computeCartesianPath(waypoints, eef_step,
-                                                 jump_threshold, trajectory);
+  double rate = move_group->computeCartesianPath(waypoints, eef_step, jump_threshold, trajectory);
   plan.trajectory_ = trajectory;
   Q_EMIT planningFinished(rate * 100);
   log(Info, "Planning Finished.");
@@ -306,9 +322,10 @@ void QNode::planTrajectory(std::vector<geometry_msgs::Pose> waypoints) {
 }
 
 // Execute the plan
-void QNode::executeTrajectory(std::vector<geometry_msgs::Pose> waypoints) {
-  if (0 == waypoints.size() ||
-      plan.trajectory_.joint_trajectory.points.empty()) {
+void QNode::executeTrajectory(std::vector<geometry_msgs::Pose> waypoints)
+{
+  if (0 == waypoints.size() || plan.trajectory_.joint_trajectory.points.empty())
+  {
     log(Fatal, "Invalid plan!");
     Q_EMIT executionFinished();
     return;
@@ -317,15 +334,16 @@ void QNode::executeTrajectory(std::vector<geometry_msgs::Pose> waypoints) {
   moveit::planning_interface::MoveItErrorCode success;
   std::vector<double> group_variable_values;
   move_group->getCurrentState()->copyJointGroupPositions(
-      move_group->getCurrentState()->getRobotModel()->getJointModelGroup(
-          move_group->getName()),
-      group_variable_values);
+      move_group->getCurrentState()->getRobotModel()->getJointModelGroup(move_group->getName()), group_variable_values);
   log(Info, "Executing plan.");
-  if (!move_group->execute(plan)) {
+  if (!move_group->execute(plan))
+  {
     log(Fatal, "Failed to execute the plan!");
     Q_EMIT executionFinished();
     return;
-  } else {
+  }
+  else
+  {
     log(Info, "SUCCESS!");
   }
 
@@ -333,15 +351,21 @@ void QNode::executeTrajectory(std::vector<geometry_msgs::Pose> waypoints) {
   move_group->setStartStateToCurrentState();
   move_group->setJointValueTarget(group_variable_values);
   success = move_group->plan(temp_plan);
-  if (success) {
-    if (!move_group->execute(temp_plan)) {
+  if (success)
+  {
+    if (!move_group->execute(temp_plan))
+    {
       log(Fatal, "Failed to move back to the start state!");
       Q_EMIT executionFinished();
       return;
-    } else {
+    }
+    else
+    {
       log(Info, "SUCCESS!");
     }
-  } else {
+  }
+  else
+  {
     log(Fatal, "Can not find a path to the start state!");
     Q_EMIT executionFinished();
     return;
@@ -349,39 +373,45 @@ void QNode::executeTrajectory(std::vector<geometry_msgs::Pose> waypoints) {
   Q_EMIT executionFinished();
 }
 
-void QNode::log(const LogLevel &level, const std::string &msg) {
+void QNode::log(const LogLevel &level, const std::string &msg)
+{
   logging_model.insertRows(logging_model.rowCount(), 1);
   std::stringstream logging_model_msg;
-  switch (level) {
-    case (Debug): {
+  switch (level)
+  {
+    case (Debug):
+    {
       ROS_DEBUG_STREAM(msg);
       logging_model_msg << "[DEBUG] [" << ros::Time::now() << "]: " << msg;
       break;
     }
-    case (Info): {
+    case (Info):
+    {
       ROS_INFO_STREAM(msg);
       logging_model_msg << "[INFO] [" << ros::Time::now() << "]: " << msg;
       break;
     }
-    case (Warn): {
+    case (Warn):
+    {
       ROS_WARN_STREAM(msg);
       logging_model_msg << "[INFO] [" << ros::Time::now() << "]: " << msg;
       break;
     }
-    case (Error): {
+    case (Error):
+    {
       ROS_ERROR_STREAM(msg);
       logging_model_msg << "[ERROR] [" << ros::Time::now() << "]: " << msg;
       break;
     }
-    case (Fatal): {
+    case (Fatal):
+    {
       ROS_FATAL_STREAM(msg);
       logging_model_msg << "[FATAL] [" << ros::Time::now() << "]: " << msg;
       break;
     }
   }
   QVariant new_row(QString(logging_model_msg.str().c_str()));
-  logging_model.setData(logging_model.index(logging_model.rowCount() - 1),
-                        new_row);
+  logging_model.setData(logging_model.index(logging_model.rowCount() - 1), new_row);
   Q_EMIT loggingUpdated();  // used to readjust the scrollbar
 }
 
