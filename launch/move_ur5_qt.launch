@@ -1,4 +1,5 @@
 <launch>
-    <rosparam file="$(find move_ur5_qt)/param/target_frame.yaml" command="load"/>
-    <node name="move_ur5_qt" pkg="move_ur5_qt" type="move_ur5_qt"/>
+    <node name="move_ur5_qt" pkg="move_ur5_qt" type="move_ur5_qt">
+        <rosparam file="$(find move_ur5_qt)/param/target_frame.yaml" command="load"/>
+    </node>
 </launch>
