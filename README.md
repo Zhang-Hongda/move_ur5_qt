@@ -125,3 +125,20 @@ The interface should look like this:
 ***
 ### New features
 - A hand gesture recognition system has been developed.
+- Gesture commands
+![gestures.png](./png/gestures.png "gestures")
+- GUI
+![new GUI](./png/new_GUI.png  "new GUI")
+#### Usage
+To start the program, run:
+```
+roslaunch move_ur5_qt T-RPD.launch
+```
+ - Simply click on "**Enable Gesture Control**" button to enable gesture control.
+ - Gestures are recognized and published by an ROS node.
+ - The node publishes gesture information through topic "**gestures**".
+#### Video
+- Trajectory programming system with hand gesture recognition.
+[![gesture+T-RPD](https://img.youtube.com/vi/zrDPwKBzDR4/0.jpg)](https://www.youtube.com/watch?v=zrDPwKBzDR4)  
+- Programming a 3D trajectory with the system.
+[![gesture+T-RPD+3d curves](https://img.youtube.com/vi/I-mkXT_k8kA/0.jpg)](https://www.youtube.com/watch?v=I-mkXT_k8kA)  
