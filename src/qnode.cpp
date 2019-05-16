@@ -141,7 +141,7 @@ bool QNode::init()
     return false;
   }
   ros::start();  // explicitly needed
-  node_handle = std::make_shared<ros::NodeHandle>("~");
+  node_handle = std::make_shared<ros::NodeHandle>();
   planning_scene_diff_publisher = node_handle->advertise<moveit_msgs::PlanningScene>("planning_scene", 1);
   marker_pub = node_handle->advertise<visualization_msgs::Marker>("visualization_marker", 1);
   start();
@@ -160,7 +160,7 @@ bool QNode::init(const std::string &master_url, const std::string &host_url)
     return false;
   }
   ros::start();  // explicitly needed
-  node_handle = std::make_shared<ros::NodeHandle>("~");
+  node_handle = std::make_shared<ros::NodeHandle>();
   planning_scene_diff_publisher = node_handle->advertise<moveit_msgs::PlanningScene>("planning_scene", 1);
   marker_pub = node_handle->advertise<visualization_msgs::Marker>("visualization_marker", 1);
 

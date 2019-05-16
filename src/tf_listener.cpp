@@ -81,7 +81,7 @@ bool Tf_listener::init()
     return false;
   }
   ros::start();  // explicitly needed
-  node_handle = std::make_shared<ros::NodeHandle>("~");
+  node_handle = std::make_shared<ros::NodeHandle>();
   listener = std::make_shared<tf::TransformListener>();
   return true;
 }
