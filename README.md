@@ -122,17 +122,6 @@ The interface should look like this:
      [![experiment viedo](https://img.youtube.com/vi/F18YgKlDluw/0.jpg)](https://www.youtube.com/watch?v=F18YgKlDluw)  
 * Trajectory programming with a continuous curves  
      [![experiment viedo](https://img.youtube.com/vi/5dFEKOuHhTA/0.jpg)](https://www.youtube.com/watch?v=5dFEKOuHhTA)  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+***
+### New features
+- A hand gesture recognition system has been developed.
