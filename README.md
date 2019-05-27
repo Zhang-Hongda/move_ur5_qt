@@ -120,7 +120,7 @@ The interface should look like this:
      [![experiment viedo](https://img.youtube.com/vi/YASbjS_zb-g/0.jpg)](https://www.youtube.com/watch?v=YASbjS_zb-g)  
 * Trajectory programming by specifying five waypoints.  
      [![experiment viedo](https://img.youtube.com/vi/F18YgKlDluw/0.jpg)](https://www.youtube.com/watch?v=F18YgKlDluw)  
-* Trajectory programming with a continuous curves  
+* Trajectory programming with a continuous curve  
      [![experiment viedo](https://img.youtube.com/vi/5dFEKOuHhTA/0.jpg)](https://www.youtube.com/watch?v=5dFEKOuHhTA)  
 ***
 ### New features
