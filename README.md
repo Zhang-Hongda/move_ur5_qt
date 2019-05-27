@@ -135,6 +135,8 @@ To start the program, run:
 roslaunch move_ur5_qt T-RPD.launch
 ```
  - Simply click on "**Enable Gesture Control**" button to enable gesture control.
+ - Now you can control the state of the system by performing gestures under the camera within the green box.
+ - The hand is segmented by applying an HSV filter. Users can double click on the image to specify a specific color.
  - Gestures are recognized and published by an ROS node.
  - The node publishes gesture information through topic "**gestures**".
 #### Video
