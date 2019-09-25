@@ -66,7 +66,7 @@ Step 3: activate the workspace
 ```
 source ${PATH_TO YOUR_WORKSPACE_FOLDER}/devel/setup.bash
 ```
-### Strat 
+### Start 
 To start the program, first run:
 ```
 roslaunch pcl_tracker demo.launch 
