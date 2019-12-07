@@ -1013,14 +1013,7 @@
              </property>
             </widget>
            </item>
-           <item row="1" column="0">
-            <widget class="QPushButton" name="pushButton_LO">
-             <property name="text">
-              <string>Load Objects</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
+           <item row="2" column="0">
             <widget class="QPushButton" name="pushButton_NO">
              <property name="toolTip">
               <string>Add new objects.</string>
@@ -1033,6 +1026,13 @@
              </property>
              <property name="text">
               <string>New Objects</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="QPushButton" name="pushButton_LO">
+             <property name="text">
+              <string>Load Objects</string>
              </property>
             </widget>
            </item>

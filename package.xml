@@ -74,5 +74,4 @@
   <run_depend>tf2_ros</run_depend>
   <build_depend>trajectory_msgs</build_depend>
   <run_depend>trajectory_msgs</run_depend>
-
 </package>

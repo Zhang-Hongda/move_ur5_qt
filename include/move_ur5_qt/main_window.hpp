@@ -13,6 +13,7 @@
 #include "gesture_handler.hpp"
 #include "trajectoryxmlwriter.hpp"
 #include "trajectoryxmlreader.hpp"
+
 /*****************************************************************************
 ** Namespace
 *****************************************************************************/
@@ -37,7 +38,6 @@ class MainWindow : public QMainWindow {
   void closeEvent(QCloseEvent *event);  // Overloaded function
   void showNoMasterMessage();
 
-
  public Q_SLOTS:
   /******************************************
   ** Auto-connections (connectSlotsByName())
@@ -61,7 +61,7 @@ class MainWindow : public QMainWindow {
   void timeUp();
   void updateprogressBar_T(int t);
   void update_progressBar_R(float rate);
-  void on_gestureRestart_preformed(bool);
+  void gestureRestart_preformed(bool);
 
   /******************************************
   ** Auto-connections (connectSlotsByName())

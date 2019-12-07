@@ -182,7 +182,7 @@ MainWindow::MainWindow(int argc, char **argv, QWidget *parent)
   QObject::connect(&gesture_handler, SIGNAL(recordfinish(bool)),
                    ui.pushButton_F, SLOT(setChecked(bool)));
   QObject::connect(&gesture_handler, SIGNAL(recordrestart(bool)), this,
-                   SLOT(on_gestureRestart_preformed(bool)));
+                   SLOT(gestureRestart_preformed(bool)));
   QObject::connect(&gesture_handler, SIGNAL(plan()), ui.pushButton_P,
                    SLOT(click()));
   QObject::connect(&gesture_handler, SIGNAL(execut()), ui.pushButton_E,
@@ -502,7 +502,7 @@ void move_ur5_qt::MainWindow::on_checkBox_UT_toggled(bool checked) {
 void move_ur5_qt::MainWindow::on_pushButton_F_toggled(bool checked) {
   ui.tab_manager->setCurrentIndex(1);  // show first tab.
   if (checked) {
-  	ui.pushButton_R->setChecked(false);
+    ui.pushButton_R->setChecked(false);
     ui.groupBox_PE->setEnabled(true);
     ui.pushButton_E->setEnabled(false);
     ui.pushButton_R->setChecked(false);
@@ -648,16 +648,16 @@ void move_ur5_qt::MainWindow::on_pushButton_PE_clicked() {
   // on_pushButton_E_clicked();
 }
 
-void move_ur5_qt::MainWindow::on_gestureRestart_preformed(bool checked) {
-    if(ui.pushButton_R->isChecked()){
-        ui.pushButton_R->setChecked(false);
-      ui.pushButton_F->setChecked(true);
-        ui.pushButton_F->setChecked(false);
-    }else{
-        ui.pushButton_F->setChecked(true);
-        ui.pushButton_F->setChecked(false);
-    }
-    if(ui.pushButton_F->isChecked()){
-        ui.pushButton_F->setChecked(false);
-    }
+void move_ur5_qt::MainWindow::gestureRestart_preformed(bool checked) {
+  if (ui.pushButton_R->isChecked()) {
+    ui.pushButton_R->setChecked(false);
+    ui.pushButton_F->setChecked(true);
+    ui.pushButton_F->setChecked(false);
+  } else {
+    ui.pushButton_F->setChecked(true);
+    ui.pushButton_F->setChecked(false);
+  }
+  if (ui.pushButton_F->isChecked()) {
+    ui.pushButton_F->setChecked(false);
+  }
 }
