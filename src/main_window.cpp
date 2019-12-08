@@ -289,7 +289,7 @@ void MainWindow::ReadSettings() {
   bool checked_ut = settings.value("use_timer", false).toBool();
   ui.checkBox_UT->setChecked(checked_ut);
   ui.spinBox_CD->setEnabled(checked_ut);
-  ui.progressBar_T->setVisible(checked_ut);
+  ui.progressBar_T->setEnabled(checked_ut);
   ui.spinBox_CD->setValue(settings.value("countDown", 5).toInt());
   QString path =
       settings.value("path", QString(
@@ -491,10 +491,10 @@ void move_ur5_qt::MainWindow::on_checkBox_UT_toggled(bool checked) {
   if (checked) {
     listener.log(listener.Info, "Use timer.");
     ui.spinBox_CD->setEnabled(true);
-    ui.progressBar_T->setVisible(true);
+    ui.progressBar_T->setEnabled(true);
   } else {
     ui.spinBox_CD->setEnabled(false);
-    ui.progressBar_T->setVisible(false);
+    ui.progressBar_T->setEnabled(false);
     listener.log(listener.Info, "Disable timer.");
   }
 }
