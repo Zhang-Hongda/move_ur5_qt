@@ -11,6 +11,7 @@
 #include <moveit_msgs/CollisionObject.h>
 #include <tf/tf.h>
 #endif
+#include <string>
 #include <vector>
 
 namespace move_ur5_qt {
@@ -62,9 +63,10 @@ bool open_file(std::fstream &obj_file, string dir);
 // class
 class Collision_Objects_Mannager {
  public:
-  Collision_Objects_Mannager();
+  Collision_Objects_Mannager(int argc, char **argv);
   ~Collision_Objects_Mannager();
-  void init(int argc, char **argv);
+  void init();
+  void init(const std::string &master_url, const std::string &host_url);
   void add_collision_object(collision_object obj);
   void add_collision_object(vector<collision_object> obj_list);
   bool load_collision_objects_form_file(collision_object &obj, string dir);
@@ -74,6 +76,8 @@ class Collision_Objects_Mannager {
   void remove_all_objects();
 
  private:
+  int init_argc;
+  char **init_argv;
   std::shared_ptr<ros::NodeHandle> nh_ptr;
   moveit::planning_interface::PlanningSceneInterfacePtr
       planning_scene_interface_ptr;
