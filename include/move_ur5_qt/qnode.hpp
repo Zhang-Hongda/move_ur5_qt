@@ -49,8 +49,6 @@ class QNode : public QThread {
   void move_Forward();
   void move_Up();
   void move_Home();
-  void addObjects();
-  void removeObjects();
   void updatePositon();
   void updateOrientation();
   void updateJointvalues();

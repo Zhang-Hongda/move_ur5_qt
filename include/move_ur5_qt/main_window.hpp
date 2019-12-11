@@ -13,6 +13,7 @@
 #include "gesture_handler.hpp"
 #include "trajectoryxmlwriter.hpp"
 #include "trajectoryxmlreader.hpp"
+#include "collision_objects_mannager.h"
 
 /*****************************************************************************
 ** Namespace
@@ -102,10 +103,11 @@ Q_SIGNALS:
   QNode qnode;
   Tf_listener listener;
   Timer timer;
-  Gesture_handler gesture_handler;
   std::vector<geometry_msgs::Pose> waypoints;
   trajectoryXMLWriter writer;
   trajectoryXMLReader reader;
+  Gesture_handler gesture_handler;
+  Collision_Objects_Mannager collision_objects_mannager;
 };
 
 }  // namespace move_ur5_qt

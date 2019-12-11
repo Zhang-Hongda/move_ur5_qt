@@ -85,7 +85,8 @@ MainWindow::MainWindow(int argc, char **argv, QWidget *parent)
       timer(),
       writer(),
       reader(),
-      gesture_handler() {
+      gesture_handler(),
+      collision_objects_mannager() {
   ui.setupUi(this);   // Calling this incidentally connects all ui's triggers to
                       // on_...() callbacks in this class.
   ros::Time::init();  // Initialize ros time first or it may crash
@@ -189,6 +190,8 @@ MainWindow::MainWindow(int argc, char **argv, QWidget *parent)
                    SLOT(click()));
   QObject::connect(&gesture_handler, SIGNAL(planandexecut()), ui.pushButton_PE,
                    SLOT(click()));
+
+  collision_objects_mannager.init(argc, argv);
 }
 
 MainWindow::~MainWindow() {}
@@ -357,9 +360,7 @@ void move_ur5_qt::MainWindow::on_pushButtonMU_clicked() { qnode.move_Up(); }
 
 void move_ur5_qt::MainWindow::on_pushButton_MH_clicked() { qnode.move_Home(); }
 
-void move_ur5_qt::MainWindow::on_quit_button_clicked() {
-  qnode.removeObjects();
-}
+void move_ur5_qt::MainWindow::on_quit_button_clicked() {}
 
 void move_ur5_qt::MainWindow::updatelineEdit_Position(std::string position) {
   ui.lineEdit_Position->setText(QString::fromStdString(position));
@@ -391,10 +392,16 @@ void move_ur5_qt::MainWindow::on_pushButton_CS_clicked() {
   listener.clearRobotstatusview();
 }
 
-void move_ur5_qt::MainWindow::on_pushButton_PO_clicked() { qnode.addObjects(); }
+void move_ur5_qt::MainWindow::on_pushButton_PO_clicked() {
+  move_ur5_qt::collision_object obj(
+      "base_link", "obj", move_ur5_qt::primitive_shape_set::BOX, {0, 0, 255},
+      {0.5, 0.5, 0.5}, {0, 0, 0, 0, 0, 0});
+  collision_objects_mannager.add_collision_object(obj);
+  //  qnode.addObjects();
+}
 
 void move_ur5_qt::MainWindow::on_pushButton_CO_clicked() {
-  qnode.removeObjects();
+  //  qnode.removeObjects();
 }
 
 void move_ur5_qt::MainWindow::disableAllwidgets() {
@@ -606,6 +613,7 @@ void move_ur5_qt::MainWindow::on_spinBox_Fre_editingFinished() {
 
 void move_ur5_qt::MainWindow::on_pushButton_LF_clicked() {
   ui.tab_manager->setCurrentIndex(1);  // show first tab.
+  ui.groupBox_PE->setEnabled(false);
   if (!waypoints.empty()) {
     if (QMessageBox::Yes ==
         QMessageBox::question(this, tr("Warning"),
@@ -618,7 +626,6 @@ void move_ur5_qt::MainWindow::on_pushButton_LF_clicked() {
       return;
     }
   }
-  ui.groupBox_PE->setEnabled(true);
   if (reader.readFile(waypoints)) {
     listener.log(listener.Info, "SUCCESS! File loaded. ");
     listener.log(listener.Info,
@@ -628,6 +635,7 @@ void move_ur5_qt::MainWindow::on_pushButton_LF_clicked() {
     listener.log(listener.Fatal, "FAILED! File not load!");
     return;
   }
+  if (!waypoints.empty()) ui.groupBox_PE->setEnabled(true);
 }
 
 void move_ur5_qt::MainWindow::on_pushButton_EGC_toggled(bool checked) {

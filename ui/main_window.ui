@@ -412,7 +412,7 @@
         <property name="geometry">
          <rect>
           <x>0</x>
-          <y>-159</y>
+          <y>-499</y>
           <width>297</width>
           <height>1200</height>
          </rect>
@@ -467,6 +467,12 @@
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>243</height>
+             </size>
             </property>
             <property name="title">
              <string>Ros Master</string>
@@ -568,6 +574,12 @@
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>141</height>
+             </size>
+            </property>
             <property name="title">
              <string>RPD Control Panel</string>
             </property>
@@ -590,6 +602,34 @@
                  </property>
                  <property name="text">
                   <string>Frequency/Hz</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QSpinBox" name="spinBox_Fre">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="toolTip">
+                  <string>Set frequency.</string>
+                 </property>
+                 <property name="statusTip">
+                  <string>Set frequency.</string>
+                 </property>
+                 <property name="whatsThis">
+                  <string>Set frequency.</string>
+                 </property>
+                 <property name="layoutDirection">
+                  <enum>Qt::LeftToRight</enum>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 </property>
+                 <property name="maximum">
+                  <number>9999</number>
                  </property>
                 </widget>
                </item>
@@ -624,34 +664,6 @@
                  </property>
                  <property name="checkable">
                   <bool>true</bool>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QSpinBox" name="spinBox_Fre">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="toolTip">
-                  <string>Set frequency.</string>
-                 </property>
-                 <property name="statusTip">
-                  <string>Set frequency.</string>
-                 </property>
-                 <property name="whatsThis">
-                  <string>Set frequency.</string>
-                 </property>
-                 <property name="layoutDirection">
-                  <enum>Qt::LeftToRight</enum>
-                 </property>
-                 <property name="alignment">
-                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                 </property>
-                 <property name="maximum">
-                  <number>9999</number>
                  </property>
                 </widget>
                </item>
@@ -816,6 +828,12 @@
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>134</height>
+             </size>
+            </property>
             <property name="toolTip">
              <string>Save Trajectory.</string>
             </property>
@@ -884,6 +902,9 @@
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 </property>
+                 <property name="maximum">
+                  <number>100</number>
                  </property>
                 </widget>
                </item>
@@ -1073,6 +1094,12 @@
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>103</height>
+             </size>
+            </property>
             <property name="title">
              <string>Save and Load</string>
             </property>
@@ -1145,6 +1172,12 @@
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>103</height>
+             </size>
             </property>
             <property name="title">
              <string>Scene Objects</string>
@@ -1227,6 +1260,12 @@
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>71</height>
+             </size>
             </property>
             <property name="title">
              <string>HGR Control</string>
