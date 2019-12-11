@@ -40,7 +40,7 @@
        <locale language="English" country="Australia"/>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <property name="documentMode">
        <bool>false</bool>
@@ -335,6 +335,11 @@
         </item>
        </layout>
       </widget>
+      <widget class="QWidget" name="tab_log">
+       <attribute name="title">
+        <string>log</string>
+       </attribute>
+      </widget>
      </widget>
     </item>
    </layout>
@@ -412,7 +417,7 @@
         <property name="geometry">
          <rect>
           <x>0</x>
-          <y>-499</y>
+          <y>0</y>
           <width>297</width>
           <height>1200</height>
          </rect>

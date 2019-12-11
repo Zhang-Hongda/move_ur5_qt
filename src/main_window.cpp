@@ -86,7 +86,7 @@ MainWindow::MainWindow(int argc, char **argv, QWidget *parent)
       writer(),
       reader(),
       gesture_handler(),
-      collision_objects_mannager() {
+      collision_objects_mannager(argc, argv) {
   ui.setupUi(this);   // Calling this incidentally connects all ui's triggers to
                       // on_...() callbacks in this class.
   ros::Time::init();  // Initialize ros time first or it may crash
@@ -126,7 +126,7 @@ MainWindow::MainWindow(int argc, char **argv, QWidget *parent)
   ** Auto Start
   **********************/
   if (ui.checkbox_remember_settings->isChecked()) {
-    on_button_connect_clicked(true);
+    on_button_connect_clicked();
   }
   /*********************
   ** Robot Status
@@ -190,8 +190,6 @@ MainWindow::MainWindow(int argc, char **argv, QWidget *parent)
                    SLOT(click()));
   QObject::connect(&gesture_handler, SIGNAL(planandexecut()), ui.pushButton_PE,
                    SLOT(click()));
-
-  collision_objects_mannager.init(argc, argv);
 }
 
 MainWindow::~MainWindow() {}
@@ -207,12 +205,13 @@ void MainWindow::showNoMasterMessage() {
   close();
 }
 
-void MainWindow::on_button_connect_clicked(bool check) {
+void MainWindow::on_button_connect_clicked() {
   if (ui.checkbox_use_environment->isChecked()) {
     if (!qnode.init()) {
       showNoMasterMessage();
     } else {
       ui.button_connect->setEnabled(false);
+      collision_objects_mannager.init();
       qnode.log(qnode.Info, "Connection Established.");
     }
   } else {
@@ -223,6 +222,8 @@ void MainWindow::on_button_connect_clicked(bool check) {
       ui.button_connect->setEnabled(false);
       ui.line_edit_master->setReadOnly(true);
       ui.line_edit_host->setReadOnly(true);
+      collision_objects_mannager.init(ui.line_edit_master->text().toStdString(),
+                                      ui.line_edit_host->text().toStdString());
       qnode.log(qnode.Info, "Connection Established.");
     }
   }

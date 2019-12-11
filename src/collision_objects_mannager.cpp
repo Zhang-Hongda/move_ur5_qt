@@ -148,12 +148,30 @@ bool string2vector(string str, vector<T> &vec) {
 }
 
 // class function
-Collision_Objects_Mannager::Collision_Objects_Mannager() {}
+Collision_Objects_Mannager::Collision_Objects_Mannager(int argc, char **argv)
+    : init_argc(argc), init_argv(argv) {}
 
 Collision_Objects_Mannager::~Collision_Objects_Mannager() {}
 
-void Collision_Objects_Mannager::init(int argc, char **argv) {
-  ros::init(argc, argv, "collision_objects_mannager_node");
+void Collision_Objects_Mannager::init() {
+  ros::init(init_argc, init_argv, "collision_objects_mannager_node");
+  nh_ptr = std::make_shared<ros::NodeHandle>();
+  ros::AsyncSpinner spin(1);
+  spin.start();
+  planning_scene_interface_ptr =
+      std::make_shared<moveit::planning_interface::PlanningSceneInterface>();
+  ros::Duration(1.0).sleep();  // wait for init
+  planning_scene_diff_publisher =
+      nh_ptr->advertise<moveit_msgs::PlanningScene>("planning_scene", 1);
+}
+
+void Collision_Objects_Mannager::init(const std::string &master_url,
+                                      const std::string &host_url) {
+  std::map<std::string, std::string> remappings;
+  remappings["__master"] = master_url;
+  remappings["__hostname"] = host_url;
+  ros::init(remappings, "collision_objects_mannager_node");
+
   nh_ptr = std::make_shared<ros::NodeHandle>();
   ros::AsyncSpinner spin(1);
   spin.start();
