@@ -13,7 +13,7 @@
 #include "gesture_handler.hpp"
 #include "trajectoryxmlwriter.hpp"
 #include "trajectoryxmlreader.hpp"
-#include "collision_objects_mannager.h"
+#include "collision_objects_mannager.hpp"
 
 /*****************************************************************************
 ** Namespace
@@ -34,8 +34,9 @@ class MainWindow : public QMainWindow {
   MainWindow(int argc, char **argv, QWidget *parent = 0);
   ~MainWindow();
 
-  void ReadSettings();   // Load up qt program settings at startup
-  void WriteSettings();  // Save qt program settings when closing
+  void ReadSettings();  // Load up qt program settings at startup
+  void ReadSettingsAfterStartup();
+  void WriteSettings();                 // Save qt program settings when closing
   void closeEvent(QCloseEvent *event);  // Overloaded function
   void showNoMasterMessage();
 
@@ -74,7 +75,6 @@ class MainWindow : public QMainWindow {
   void on_pushButtonMU_clicked();
   void on_pushButton_MH_clicked();
   void on_pushButton_CR_clicked();
-  void on_pushButton_PO_clicked();
   void on_pushButton_CO_clicked();
   void on_pushButton_CS_clicked();
   void on_pushButton_R_toggled(bool checked);
@@ -95,8 +95,19 @@ class MainWindow : public QMainWindow {
 
   void on_pushButton_PE_clicked();
 
+  void on_pushButton_LO_clicked();
+
+  void on_checkBox_autoload_toggled(bool checked);
+
+  void update_collision_objects_list();
+
+  void on_pushButton_selectall_clicked();
+
+  void on_pushButton_clearselected_clicked();
+
 Q_SIGNALS:
   void startTracking();
+  void addObjectsFinished();
 
  private:
   Ui::MainWindowDesign ui;

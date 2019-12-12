@@ -102,8 +102,8 @@ MainWindow::MainWindow(int argc, char **argv, QWidget *parent)
   /*********************
   ** Eable Gui
   **********************/
-  QObject::connect(&qnode, SIGNAL(addObjectsFinished()), this,
-                   SLOT(enableAllwidgets()));
+  //  QObject::connect(this, SIGNAL(addObjectsFinished()), this,
+  //                   SLOT(enableAllwidgets()));
   /*********************
   ** Shut Down
   **********************/
@@ -190,6 +190,13 @@ MainWindow::MainWindow(int argc, char **argv, QWidget *parent)
                    SLOT(click()));
   QObject::connect(&gesture_handler, SIGNAL(planandexecut()), ui.pushButton_PE,
                    SLOT(click()));
+
+  /*********************
+  ** Collision objects mannager
+  **********************/
+  QObject::connect(&collision_objects_mannager,
+                   SIGNAL(Collision_Objects_Updated()), this,
+                   SLOT(update_collision_objects_list()));
 }
 
 MainWindow::~MainWindow() {}
@@ -213,6 +220,8 @@ void MainWindow::on_button_connect_clicked() {
       ui.button_connect->setEnabled(false);
       collision_objects_mannager.init();
       qnode.log(qnode.Info, "Connection Established.");
+      enableAllwidgets();
+      ReadSettingsAfterStartup();
     }
   } else {
     if (!qnode.init(ui.line_edit_master->text().toStdString(),
@@ -225,6 +234,8 @@ void MainWindow::on_button_connect_clicked() {
       collision_objects_mannager.init(ui.line_edit_master->text().toStdString(),
                                       ui.line_edit_host->text().toStdString());
       qnode.log(qnode.Info, "Connection Established.");
+      enableAllwidgets();
+      ReadSettingsAfterStartup();
     }
   }
 }
@@ -290,22 +301,40 @@ void MainWindow::ReadSettings() {
     ui.line_edit_master->setEnabled(false);
     ui.line_edit_host->setEnabled(false);
   }
-  bool checked_ut = settings.value("use_timer", false).toBool();
+}
+
+void MainWindow::ReadSettingsAfterStartup() {
+  QSettings settings("Qt-Ros Package", "move_ur5_qt");
+  bool checked_ut =
+      settings.value("use_timer", false).toBool();  // use timer or not
   ui.checkBox_UT->setChecked(checked_ut);
   ui.spinBox_CD->setEnabled(checked_ut);
   ui.progressBar_T->setEnabled(checked_ut);
-  ui.spinBox_CD->setValue(settings.value("countDown", 5).toInt());
+  ui.spinBox_CD->setValue(
+      settings.value("countDown", 5).toInt());  // countdown value
+  // save trajectory file path
   QString path =
       settings.value("path", QString(
                                  "/home/eric/work_space/qt_ws/src/move_ur5_qt/"
                                  "data/trajectory.xml")).toString();
   ui.lineEdit_Path->setText(path);
-  bool threshod = settings.value("threshod", false).toBool();
+  bool threshod =
+      settings.value("threshod", false).toBool();  // use threshod or not
   ui.checkBox_Threshod->setChecked(threshod);
-  ui.spinBox_Rate->setValue(settings.value("rate", 80).toInt());
+  ui.spinBox_Rate->setValue(
+      settings.value("rate", 80).toInt());  // threshold rate
   ui.checkBox_RAC->setChecked(settings.value("rl_autoclear", false).toBool());
   ui.checkBox_SAC->setChecked(settings.value("sl_autoclear", false).toBool());
-  ui.spinBox_Fre->setValue(settings.value("frequency", 80).toInt());
+  ui.spinBox_Fre->setValue(
+      settings.value("frequency", 80).toInt());  // sample freq
+  // objects auto load
+  QString objpath =
+      settings.value("object_file_path",
+                     QString(
+                         "/home/eric/work_space/workspace_ros/new_ws/src/"
+                         "pcl_tracker/collision_objects")).toString();
+  ui.lineEdit_objpath->setText(objpath);
+  ui.checkBox_autoload->setChecked(settings.value("auto_load", false).toBool());
 }
 
 void MainWindow::WriteSettings() {
@@ -326,6 +355,10 @@ void MainWindow::WriteSettings() {
   settings.setValue("rl_autoclear", QVariant(ui.checkBox_RAC->isChecked()));
   settings.setValue("sl_autoclear", QVariant(ui.checkBox_SAC->isChecked()));
   settings.setValue("frequency", ui.spinBox_Fre->value());
+  settings.setValue(
+      "object_file_path",
+      ui.lineEdit_objpath->text());  // auto load collision object file path
+  settings.setValue("auto_load", ui.checkBox_autoload->isChecked());
 }
 
 void MainWindow::closeEvent(QCloseEvent *event) {
@@ -391,14 +424,6 @@ void move_ur5_qt::MainWindow::on_pushButton_CR_clicked() {
 
 void move_ur5_qt::MainWindow::on_pushButton_CS_clicked() {
   listener.clearRobotstatusview();
-}
-
-void move_ur5_qt::MainWindow::on_pushButton_PO_clicked() {
-  move_ur5_qt::collision_object obj(
-      "base_link", "obj", move_ur5_qt::primitive_shape_set::BOX, {0, 0, 255},
-      {0.5, 0.5, 0.5}, {0, 0, 0, 0, 0, 0});
-  collision_objects_mannager.add_collision_object(obj);
-  //  qnode.addObjects();
 }
 
 void move_ur5_qt::MainWindow::on_pushButton_CO_clicked() {
@@ -669,4 +694,70 @@ void move_ur5_qt::MainWindow::gestureRestart_preformed(bool checked) {
   if (ui.pushButton_F->isChecked()) {
     ui.pushButton_F->setChecked(false);
   }
+}
+
+void move_ur5_qt::MainWindow::on_pushButton_LO_clicked() {
+  QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"), ".",
+                                                  tr("TXT Files(*.txt)"));
+  if (collision_objects_mannager.load_collision_objects_form_file(
+          fileName.toStdString())) {
+    collision_objects_mannager.update();
+  }
+}
+
+// automatically load collision objects from a folder
+void move_ur5_qt::MainWindow::on_checkBox_autoload_toggled(bool checked) {
+  if (checked) {
+    string dir = ui.lineEdit_objpath->text().toStdString();
+    if (dir.empty()) {
+      QString path = QFileDialog::getExistingDirectory(this, tr("Find Folder"),
+                                                       QDir::currentPath());
+      ui.lineEdit_objpath->setText(path);
+      dir = path.toStdString();
+    }
+    collision_objects_mannager.load_collision_objects_form_dir(dir);
+    collision_objects_mannager.update();
+    update_collision_objects_list();
+  }
+}
+
+// update co list
+void move_ur5_qt::MainWindow::update_collision_objects_list() {
+  ui.listWidget_objlist->clear();
+  for (string id : collision_objects_mannager.get_objects_names()) {
+    QListWidgetItem *item = new QListWidgetItem;
+    item->setText(id.c_str());
+    item->setCheckState(Qt::Unchecked);
+    ui.listWidget_objlist->addItem(item);
+  }
+}
+
+void move_ur5_qt::MainWindow::on_pushButton_selectall_clicked() {
+  int cnt = ui.listWidget_objlist->count();
+  for (int i = 0; i < cnt; ++i) {
+    QListWidgetItem *item = ui.listWidget_objlist->item(i);
+    item->setCheckState(Qt::Checked);
+  }
+}
+
+void move_ur5_qt::MainWindow::on_pushButton_clearselected_clicked() {
+  std::vector<QListWidgetItem *> selected;
+  int cnt = ui.listWidget_objlist->count();
+  for (int i = 0; i < cnt; ++i) {
+    QListWidgetItem *item = ui.listWidget_objlist->item(i);
+    if (item->checkState() == Qt::Checked) {
+      selected.push_back(item);
+    }
+  }
+  for (QListWidgetItem *item : selected) {
+    collision_objects_mannager.remove_object(item->text().toStdString());
+    int row = ui.listWidget_objlist->row(item);
+    ui.listWidget_objlist->takeItem(row);
+    delete item;
+  }
+  collision_objects_mannager.update();
+  std::stringstream ss;
+  for (string n : collision_objects_mannager.get_objects_names())
+    ss << n << "\t";
+  ROS_INFO("%s", ss.str().c_str());
 }

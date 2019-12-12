@@ -1,8 +1,8 @@
-#ifndef COLLISION_OBJECTS_MANNAGER_H
-#define COLLISION_OBJECTS_MANNAGER_H
+#ifndef COLLISION_OBJECTS_MANNAGER_HPP
+#define COLLISION_OBJECTS_MANNAGER_HPP
 
 #include <fstream>
-#include "getfile.h"
+#include "getfile.hpp"
 #include <math.h>
 #ifndef Q_MOC_RUN
 #include <moveit/move_group_interface/move_group_interface.h>
@@ -13,6 +13,7 @@
 #endif
 #include <string>
 #include <vector>
+#include <QThread>
 
 namespace move_ur5_qt {
 
@@ -61,19 +62,23 @@ moveit_msgs::ObjectColor setColor(std::string name, vector<float> rgba);
 bool open_file(std::fstream &obj_file, string dir);
 
 // class
-class Collision_Objects_Mannager {
+class Collision_Objects_Mannager : public QThread {
+  Q_OBJECT
  public:
-  Collision_Objects_Mannager(int argc, char **argv);
-  ~Collision_Objects_Mannager();
+  explicit Collision_Objects_Mannager(int argc, char **argv);
+  virtual ~Collision_Objects_Mannager();
   void init();
   void init(const std::string &master_url, const std::string &host_url);
+  void update();
   void add_collision_object(collision_object obj);
   void add_collision_object(vector<collision_object> obj_list);
-  bool load_collision_objects_form_file(collision_object &obj, string dir);
-  void load_collision_objects_form_dir(vector<collision_object> &obj_list,
-                                       string folder);
+  bool load_collision_objects_form_file(string dir);
+  void load_collision_objects_form_dir(string folder);
+  vector<string> get_objects_names();
   void remove_object(string object_name);
   void remove_all_objects();
+Q_SIGNALS:
+  void Collision_Objects_Updated();
 
  private:
   int init_argc;
@@ -83,9 +88,10 @@ class Collision_Objects_Mannager {
       planning_scene_interface_ptr;
   ros::Publisher planning_scene_diff_publisher;
   // planning scene
-  vector<std::string> objects_id_set;
+  //  vector<std::string> objects_id_set;
   moveit_msgs::PlanningScene planning_scene;
-  map<string, moveit_msgs::CollisionObject> collision_object_set;
+  //  map<string, moveit_msgs::CollisionObject> collision_object_set;
+  map<string, collision_object> collision_object_set;
 };
 }  // namespace move_ur5_qt
-#endif  // COLLISION_OBJECTS_MANNAGER_H
+#endif  // COLLISION_OBJECTS_MANNAGER_HPP

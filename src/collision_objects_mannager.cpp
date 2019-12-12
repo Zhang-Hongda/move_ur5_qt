@@ -1,4 +1,4 @@
-#include "../include/move_ur5_qt/collision_objects_mannager.h"
+#include "../include/move_ur5_qt/collision_objects_mannager.hpp"
 #include <algorithm>
 namespace move_ur5_qt {
 // function that return a co
@@ -110,7 +110,8 @@ bool open_file(std::fstream &obj_file, string dir) {
     ROS_ERROR("getcwd error");
     return false;
   }
-  ROS_INFO("load file from %s/%s", current_working_dir, dir.c_str());
+  ROS_INFO("current working dir: %s, load file from: %s", current_working_dir,
+           dir.c_str());
   free(current_working_dir);
   obj_file.open(dir, std::ios::in | std::ios::out);
   if (!obj_file) {
@@ -161,8 +162,8 @@ void Collision_Objects_Mannager::init() {
   planning_scene_interface_ptr =
       std::make_shared<moveit::planning_interface::PlanningSceneInterface>();
   ros::Duration(1.0).sleep();  // wait for init
-  planning_scene_diff_publisher =
-      nh_ptr->advertise<moveit_msgs::PlanningScene>("planning_scene", 1);
+  planning_scene_diff_publisher = nh_ptr->advertise<moveit_msgs::PlanningScene>(
+      "/move_group/monitored_planning_scene", 1);
 }
 
 void Collision_Objects_Mannager::init(const std::string &master_url,
@@ -182,25 +183,59 @@ void Collision_Objects_Mannager::init(const std::string &master_url,
       nh_ptr->advertise<moveit_msgs::PlanningScene>("planning_scene", 1);
 }
 
-// add single obj
-void Collision_Objects_Mannager::add_collision_object(collision_object obj) {
-  // get object
-  moveit_msgs::CollisionObject primitive_collision_obj;
-  primitive_collision_obj = create_primitive_collision_object(obj);
-  // edit golbal set
-  objects_id_set.push_back(obj.name);
-  collision_object_set[obj.name] = primitive_collision_obj;
-  planning_scene.object_colors.push_back(setColor(obj.name, obj.color));
-  // get object set
+vector<string> Collision_Objects_Mannager::get_objects_names() {
+  using std::pair;
+  vector<string> names;
+  for (pair<string, collision_object> _obj : collision_object_set) {
+    names.push_back(_obj.first);
+  }
+  return names;
+}
+
+// rm obj
+void Collision_Objects_Mannager::remove_object(string object_name) {
+  if (!collision_object_set.erase(object_name))
+    ROS_INFO("object %s not exist", object_name.c_str());
+}
+
+// rm all obj
+void Collision_Objects_Mannager::remove_all_objects() {
+  vector<string> objects_id_set = get_objects_names();
+  planning_scene_interface_ptr->removeCollisionObjects(objects_id_set);
+}
+
+// update objects
+void Collision_Objects_Mannager::update() {
+  using std::pair;
+  remove_all_objects();
+  // get moveit object set, scence color set
   vector<moveit_msgs::CollisionObject> objects_set;
-  for (string name : objects_id_set)
-    objects_set.push_back(collision_object_set[name]);
+  planning_scene.object_colors.clear();
+  planning_scene.world.collision_objects.clear();
+  for (pair<string, collision_object> _obj : collision_object_set) {
+    // get object
+    moveit_msgs::CollisionObject primitive_collision_obj;
+    primitive_collision_obj = create_primitive_collision_object(_obj.second);
+    planning_scene.object_colors.push_back(
+        setColor(_obj.second.name, _obj.second.color));
+    planning_scene.world.collision_objects.push_back(primitive_collision_obj);
+    objects_set.push_back(primitive_collision_obj);
+  }
   // add objects
-  ROS_INFO("Add %s to %s", obj.name.c_str(), obj.frame.c_str());
   planning_scene_interface_ptr->addCollisionObjects(objects_set);
   planning_scene.is_diff = true;
   planning_scene_diff_publisher.publish(planning_scene);
   ros::Duration(0.5).sleep();
+  Q_EMIT Collision_Objects_Updated();
+}
+
+// add single obj
+void Collision_Objects_Mannager::add_collision_object(collision_object obj) {
+  using std::pair;
+  ROS_INFO("Add %s to %s", obj.name.c_str(), obj.frame.c_str());
+  // edit golbal set
+  collision_object_set[obj.name] = obj;
+  update();
   ROS_INFO("Done");
 }
 
@@ -210,27 +245,7 @@ void Collision_Objects_Mannager::add_collision_object(
   for (collision_object obj : obj_list) add_collision_object(obj);
 }
 
-// rm obj
-void Collision_Objects_Mannager::remove_object(string object_name) {
-  vector<string>::iterator it =
-      std::find(objects_id_set.begin(), objects_id_set.end(), object_name);
-  if (it == objects_id_set.end()) {
-    ROS_WARN("Remove object warning: %s not exist.", object_name.c_str());
-    return;
-  } else {
-    objects_id_set.erase(it);
-    planning_scene_interface_ptr->removeCollisionObjects({object_name});
-  }
-}
-
-// rm all obj
-void Collision_Objects_Mannager::remove_all_objects() {
-  planning_scene_interface_ptr->removeCollisionObjects(objects_id_set);
-  objects_id_set.clear();
-}
-
-bool Collision_Objects_Mannager::load_collision_objects_form_file(
-    collision_object &obj, string dir) {
+bool Collision_Objects_Mannager::load_collision_objects_form_file(string dir) {
   using std::cout;
   using std::fstream;
   using std::ios;
@@ -262,17 +277,20 @@ bool Collision_Objects_Mannager::load_collision_objects_form_file(
     ROS_ERROR("format error in collision object file.");
     return false;
   }
+  collision_object obj;
   obj.frame = obj_arg["frame"];
   obj.name = obj_arg["name"];
   obj.shape = shape_map[obj_arg["shape"]];
   obj.dimensions = dim_v;
   obj.color = col_v;
   obj.pose = pos_v;
+  collision_object_set[obj.name] = obj;
+  ROS_INFO("object loaded: %s", dir.c_str());
   return true;
 }
 
 void Collision_Objects_Mannager::load_collision_objects_form_dir(
-    vector<collision_object> &obj_list, string folder) {
+    string folder) {
   file_names fn = get_files(folder, "txt");
   if (fn.ext_files.empty()) {
     ROS_WARN("No objects in the folder: %s", folder.c_str());
@@ -280,11 +298,9 @@ void Collision_Objects_Mannager::load_collision_objects_form_dir(
   }
   vector<string>::iterator it = fn.ext_files.begin();
   for (; it != fn.ext_files.end(); ++it) {
-    collision_object obj;
-    if (load_collision_objects_form_file(obj, *it)) {
-      obj_list.push_back(obj);
-    } else
-      ROS_ERROR("Failed load object: %s/%s", folder.c_str(), it->c_str());
+    if (!load_collision_objects_form_file(*it))
+      ROS_ERROR("Failed load object: %s from %s", it->c_str(), folder.c_str());
   }
 }
+
 }  // namespace move_ur5_qt

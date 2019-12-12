@@ -375,13 +375,13 @@
    </property>
    <property name="minimumSize">
     <size>
-     <width>331</width>
+     <width>380</width>
      <height>320</height>
     </size>
    </property>
    <property name="maximumSize">
     <size>
-     <width>331</width>
+     <width>380</width>
      <height>524287</height>
     </size>
    </property>
@@ -406,7 +406,7 @@
       <widget class="QScrollArea" name="scrollArea">
        <property name="minimumSize">
         <size>
-         <width>250</width>
+         <width>300</width>
          <height>0</height>
         </size>
        </property>
@@ -417,14 +417,14 @@
         <property name="geometry">
          <rect>
           <x>0</x>
-          <y>0</y>
-          <width>297</width>
+          <y>-555</y>
+          <width>346</width>
           <height>1200</height>
          </rect>
         </property>
         <property name="minimumSize">
          <size>
-          <width>250</width>
+          <width>300</width>
           <height>1200</height>
          </size>
         </property>
@@ -433,8 +433,8 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>300</width>
-           <height>871</height>
+           <width>338</width>
+           <height>1111</height>
           </rect>
          </property>
          <property name="sizePolicy">
@@ -445,13 +445,13 @@
          </property>
          <property name="minimumSize">
           <size>
-           <width>300</width>
+           <width>330</width>
            <height>0</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>300</width>
+           <width>350</width>
            <height>16777215</height>
           </size>
          </property>
@@ -940,7 +940,7 @@
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>65</width>
+                   <width>80</width>
                    <height>16777215</height>
                   </size>
                  </property>
@@ -1187,73 +1187,90 @@
             <property name="title">
              <string>Scene Objects</string>
             </property>
-            <layout class="QGridLayout" name="gridLayout_7">
-             <item row="0" column="1">
-              <widget class="QPushButton" name="pushButton_CO">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="toolTip">
-                <string>Clear Objects</string>
-               </property>
-               <property name="statusTip">
-                <string>Clear Objects</string>
-               </property>
-               <property name="whatsThis">
-                <string>Clear Objects</string>
-               </property>
-               <property name="text">
-                <string>Clear Objects</string>
-               </property>
-              </widget>
+            <layout class="QVBoxLayout" name="verticalLayout_10">
+             <item>
+              <layout class="QGridLayout" name="gridLayout">
+               <item row="0" column="0">
+                <widget class="QCheckBox" name="checkBox_autoload">
+                 <property name="text">
+                  <string>Auto Load From Folder</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="0" colspan="2">
+                <widget class="QLineEdit" name="lineEdit_objpath"/>
+               </item>
+               <item row="1" column="2">
+                <widget class="QPushButton" name="pushButton_newobject">
+                 <property name="toolTip">
+                  <string>Add new objects.</string>
+                 </property>
+                 <property name="statusTip">
+                  <string>Add new objects.</string>
+                 </property>
+                 <property name="whatsThis">
+                  <string>Add new objects.</string>
+                 </property>
+                 <property name="text">
+                  <string>New Object</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="2">
+                <widget class="QPushButton" name="pushButton_LO">
+                 <property name="maximumSize">
+                  <size>
+                   <width>16777215</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>Load File</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
              </item>
-             <item row="0" column="0">
-              <widget class="QPushButton" name="pushButton_PO">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="toolTip">
-                <string>Publish Objects</string>
-               </property>
-               <property name="statusTip">
-                <string>Publish Objects</string>
-               </property>
-               <property name="whatsThis">
-                <string>Publish Objects</string>
-               </property>
-               <property name="text">
-                <string>Publish Objects</string>
-               </property>
-              </widget>
+             <item>
+              <widget class="QListWidget" name="listWidget_objlist"/>
              </item>
-             <item row="2" column="0">
-              <widget class="QPushButton" name="pushButton_NO">
-               <property name="toolTip">
-                <string>Add new objects.</string>
-               </property>
-               <property name="statusTip">
-                <string>Add new objects.</string>
-               </property>
-               <property name="whatsThis">
-                <string>Add new objects.</string>
-               </property>
-               <property name="text">
-                <string>New Objects</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="1">
-              <widget class="QPushButton" name="pushButton_LO">
-               <property name="text">
-                <string>Load Objects</string>
-               </property>
-              </widget>
+             <item>
+              <layout class="QGridLayout" name="gridLayout_4">
+               <item row="1" column="1">
+                <spacer name="horizontalSpacer">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item row="1" column="0">
+                <widget class="QPushButton" name="pushButton_selectall">
+                 <property name="text">
+                  <string>Select All</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="3">
+                <widget class="QPushButton" name="pushButton_clearall">
+                 <property name="text">
+                  <string>Delete All</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="2">
+                <widget class="QPushButton" name="pushButton_clearselected">
+                 <property name="text">
+                  <string>Delete Selected</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
              </item>
             </layout>
            </widget>

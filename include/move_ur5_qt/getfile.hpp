@@ -1,5 +1,5 @@
-#if !defined(GETFILE_H)
-#define GETFILE_H
+#if !defined(GETFILE_HPP)
+#define GETFILE_HPP
 #include <dirent.h>
 #include <iostream>
 #include <regex>
@@ -11,4 +11,4 @@ struct file_names {
 };
 struct file_names get_files(std::string path, std::string suffix);
 
-#endif  // GETFILE_H
+#endif  // GETFILE_HPP

@@ -62,7 +62,6 @@ Q_SIGNALS:
   void positionUpdated(std::string position);
   void orientationUpdated(std::string orientation);
   void jointvaluesUpdated(std::string jointvalues);
-  void addObjectsFinished();
   void planningFinished(float rate);
   void executionFinished();
 

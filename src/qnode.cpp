@@ -102,8 +102,7 @@ void QNode::run() {
   move_group->allowReplanning(true);
   move_group->setGoalPositionTolerance(0.01);
   move_group->setGoalOrientationTolerance(0.05);
-  Q_EMIT
-  addObjectsFinished();
+
   log(Info, "Tracking robot status.");
   while (ros::ok()) {
     updatePositon();
