@@ -53,6 +53,7 @@ class Logger : public QObject {
   }
 
   void log(const LogLevel &level, const std::string &msg);
+  void clearlog(int except = 0);
 Q_SIGNALS:
   void loggingUpdated();
 };

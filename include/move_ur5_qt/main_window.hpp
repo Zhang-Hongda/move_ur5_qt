@@ -51,7 +51,6 @@ class MainWindow : public QMainWindow {
   /******************************************
   ** Manual connections
   *******************************************/
-  void updateSIloggingView();
   void updateloggingView();
   void updatelineEdit_Position(std::string position);  // update robot status
   void updatelineEdit_Orientation(std::string orientation);
@@ -106,9 +105,7 @@ class MainWindow : public QMainWindow {
 
   void on_pushButton_clearall_clicked();
 
-Q_SIGNALS:
-  void startTracking();
-  void addObjectsFinished();
+  void on_pushButton_clearlog_clicked();
 
  private:
   Ui::MainWindowDesign ui;

@@ -19,9 +19,6 @@
 namespace move_ur5_qt {
 
 using namespace Qt;
-extern QMutex m_mutex;
-extern bool stopSign;
-extern int frequency;
 
 extern QMutex t_mutex;
 extern bool istimeup;
@@ -39,24 +36,9 @@ inline void setisEnable(bool sign) {
   isEnable = sign;
 }
 
-inline bool readstopSigen() {
-  QMutexLocker locker(&m_mutex);
-  return stopSign;
-}
-
 inline void setstopSign(bool sign) {
   QMutexLocker locker(&m_mutex);
   stopSign = sign;
-}
-
-inline int readfrequency() {
-  QMutexLocker locker(&m_mutex);
-  return frequency;
-}
-
-inline void setfrequency(int f) {
-  QMutexLocker locker(&m_mutex);
-  frequency = f;
 }
 
 inline bool getistimeup() {
@@ -100,24 +82,12 @@ MainWindow::MainWindow(int argc, char **argv, QWidget *parent)
   disableAllwidgets();                 // wait for ros thread
 
   /*********************
-  ** Eable Gui
-  **********************/
-  //  QObject::connect(this, SIGNAL(addObjectsFinished()), this,
-  //                   SLOT(enableAllwidgets()));
-  /*********************
   ** Shut Down
   **********************/
   QObject::connect(&qnode, SIGNAL(rosShutdown()), this, SLOT(close()));
 
   /*********************
-  ** Scene Info Logging
-  **********************/
-  ui.view_logging_SI->setModel(listener.loggingModel());
-  QObject::connect(&listener, SIGNAL(loggingUpdated()), this,
-                   SLOT(updateSIloggingView()));
-
-  /*********************
-  ** Scene Info Logging
+  ** Logging
   **********************/
   ui.listView_log->setModel(&logging_model);
   QObject::connect(&logger, SIGNAL(loggingUpdated()), this,
@@ -154,11 +124,6 @@ MainWindow::MainWindow(int argc, char **argv, QWidget *parent)
   QObject::connect(&listener, SIGNAL(orientationUpdated(std::string)), this,
                    SLOT(updatelineEdit_MO(std::string)));
 
-  /*********************
-  ** Tracking
-  **********************/
-  QObject::connect(this, SIGNAL(startTracking()), &listener,
-                   SLOT(startTracking()));
   /*********************
   ** Recording
   **********************/
@@ -257,13 +222,12 @@ void MainWindow::on_checkbox_use_environment_stateChanged(int state) {
 *****************************************************************************/
 // Log update
 
-void MainWindow::updateSIloggingView() {
-  if (ui.checkBox_SAC->isChecked()) {
-    listener.clearRobotstatusview(10);
+void MainWindow::updateloggingView() {
+  if (ui.checkBox_autoclearlog->isChecked()) {
+    logger.clearlog(10);
   }
-  ui.view_logging_SI->scrollToBottom();
+  ui.listView_log->scrollToBottom();
 }
-void MainWindow::updateloggingView() { ui.listView_log->scrollToBottom(); }
 
 /*****************************************************************************
 ** Implementation [Menu]
@@ -321,10 +285,10 @@ void MainWindow::ReadSettingsAfterStartup() {
   ui.checkBox_Threshod->setChecked(threshod);
   ui.spinBox_Rate->setValue(
       settings.value("rate", 80).toInt());  // threshold rate
-  ui.checkBox_RAC->setChecked(settings.value("rl_autoclear", false).toBool());
-  ui.checkBox_SAC->setChecked(settings.value("sl_autoclear", false).toBool());
+  ui.checkBox_autoclearlog->setChecked(
+      settings.value("log_autoclear", false).toBool());
   ui.spinBox_Fre->setValue(
-      settings.value("frequency", 80).toInt());  // sample freq
+      settings.value("frequency", 10).toInt());  // sample freq
   // objects auto load
   QString objpath =
       settings.value("object_file_path",
@@ -350,8 +314,8 @@ void MainWindow::WriteSettings() {
   settings.setValue("path", ui.lineEdit_Path->text());
   settings.setValue("threshod", QVariant(ui.checkBox_Threshod->isChecked()));
   settings.setValue("rate", ui.spinBox_Rate->value());
-  settings.setValue("rl_autoclear", QVariant(ui.checkBox_RAC->isChecked()));
-  settings.setValue("sl_autoclear", QVariant(ui.checkBox_SAC->isChecked()));
+  settings.setValue("log_autoclear",
+                    QVariant(ui.checkBox_autoclearlog->isChecked()));
   settings.setValue("frequency", ui.spinBox_Fre->value());
   settings.setValue(
       "object_file_path",
@@ -361,6 +325,7 @@ void MainWindow::WriteSettings() {
 
 void MainWindow::closeEvent(QCloseEvent *event) {
   WriteSettings();
+  on_pushButton_clearall_clicked();
   QMainWindow::closeEvent(event);
 }
 
@@ -369,14 +334,12 @@ void MainWindow::closeEvent(QCloseEvent *event) {
 void move_ur5_qt::MainWindow::on_pushButton_ST_toggled(bool checked) {
   if (checked) {
     ui.tab_manager->setCurrentIndex(1);  // show second tab.
-    setstopSign(false);
-    setfrequency(ui.spinBox_Fre->value());
+    listener.startTracking();
+    listener.setfrequency(ui.spinBox_Fre->value());
     ui.pushButton_F->setEnabled(true);
-    Q_EMIT startTracking();
     ui.pushButton_ST->setText("Stop Tracking");
-    //    ui.pushButton_ST->setEnabled(false);
   } else {
-    setstopSign(true);
+    listener.stopTracking();
     ui.pushButton_ST->setText("Start Tracking");
     ui.pushButton_F->setEnabled(false);
     updatelineEdit_MP("");
@@ -422,9 +385,8 @@ void move_ur5_qt::MainWindow::on_pushButton_CO_clicked() {
 
 void move_ur5_qt::MainWindow::disableAllwidgets() {
   ui.groupBox_RPDcontrolPanel->setEnabled(false);
-  ui.groupBox_Robotinfo->setEnabled(false);
+  ui.groupBox_log->setEnabled(false);
   ui.groupBox_Robotstatus->setEnabled(false);
-  ui.groupBox_Sceneinfo->setEnabled(false);
   ui.groupBox_Sceneobjects->setEnabled(false);
   ui.groupBox_Markerstatus->setEnabled(false);
   ui.groupBox_PE->setEnabled(false);
@@ -435,9 +397,8 @@ void move_ur5_qt::MainWindow::disableAllwidgets() {
 
 void move_ur5_qt::MainWindow::enableAllwidgets() {
   ui.groupBox_RPDcontrolPanel->setEnabled(true);
-  ui.groupBox_Robotinfo->setEnabled(true);
+  ui.groupBox_log->setEnabled(true);
   ui.groupBox_Robotstatus->setEnabled(true);
-  ui.groupBox_Sceneinfo->setEnabled(true);
   ui.groupBox_Sceneobjects->setEnabled(true);
   ui.groupBox_Markerstatus->setEnabled(true);
   ui.quit_button->setEnabled(true);
@@ -450,7 +411,7 @@ void move_ur5_qt::MainWindow::recordMarkerposition(geometry_msgs::Pose pose) {
   if (ui.pushButton_R->isChecked()) {
     if (!waypoints.empty()) {
       if (dist(waypoints[waypoints.size() - 1], pose) < 0.01) {
-        listener.log(listener.Fatal, "NO MOVEMENT DETECTED!");
+        logger.log(Fatal, "NO MOVEMENT DETECTED!");
         return;
       }
     }
@@ -459,7 +420,7 @@ void move_ur5_qt::MainWindow::recordMarkerposition(geometry_msgs::Pose pose) {
          << " z: " << pose.position.z;
     ss_o << "qw: " << pose.orientation.w << "qx: " << pose.orientation.x
          << " qy: " << pose.orientation.y << " qz: " << pose.orientation.z;
-    listener.log(listener.Info, "Received: " + ss_p.str() + " " + ss_o.str());
+    logger.log(Info, "Received: " + ss_p.str() + " " + ss_o.str());
     ss_p.str("");
     ss_o.str("");
     waypoints.push_back(pose);
@@ -485,7 +446,7 @@ void move_ur5_qt::MainWindow::on_pushButton_R_toggled(bool checked) {
     ui.groupBox_PE->setEnabled(false);
     ui.pushButton_LF->setEnabled(false);
     ui.tab_manager->setCurrentIndex(1);  // show second tab.
-    listener.log(listener.Info, "Recording Start");
+    logger.log(Info, "Recording Start");
     ui.pushButton_R->setText("Stop");
     ui.pushButton_S->setEnabled(true);
     if (ui.checkBox_UT->isChecked()) {
@@ -501,9 +462,9 @@ void move_ur5_qt::MainWindow::on_pushButton_R_toggled(bool checked) {
     setistimeup(true);
     timeUp();
     ui.pushButton_LF->setEnabled(true);
-    listener.log(listener.Info, "Recording Stop");
-    listener.log(listener.Info, "Received points number:  " +
-                                    std::to_string(waypoints.size()));
+    logger.log(Info, "Recording Stop");
+    logger.log(Info,
+               "Received points number:  " + std::to_string(waypoints.size()));
     ui.pushButton_R->setText("Record");
     ui.checkBox_UT->setEnabled(true);
   }
@@ -512,13 +473,13 @@ void move_ur5_qt::MainWindow::on_pushButton_R_toggled(bool checked) {
 void move_ur5_qt::MainWindow::on_checkBox_UT_toggled(bool checked) {
   ui.tab_manager->setCurrentIndex(1);  // show first tab.
   if (checked) {
-    listener.log(listener.Info, "Use timer.");
+    logger.log(Info, "Use timer.");
     ui.spinBox_CD->setEnabled(true);
     ui.progressBar_T->setEnabled(true);
   } else {
     ui.spinBox_CD->setEnabled(false);
     ui.progressBar_T->setEnabled(false);
-    listener.log(listener.Info, "Disable timer.");
+    logger.log(Info, "Disable timer.");
   }
 }
 
@@ -532,8 +493,7 @@ void move_ur5_qt::MainWindow::on_pushButton_F_toggled(bool checked) {
     ui.pushButton_R->setEnabled(false);
     ui.pushButton_F->setText("Restart");
     setistimeup(true);
-    listener.log(listener.Info,
-                 "Total points:  " + std::to_string(waypoints.size()));
+    logger.log(Info, "Total points:  " + std::to_string(waypoints.size()));
     qnode.publishMarkerposition(waypoints);
   } else {
     ui.progressBar_R->setValue(0);
@@ -543,7 +503,7 @@ void move_ur5_qt::MainWindow::on_pushButton_F_toggled(bool checked) {
     ui.pushButton_F->setText("Finished");
     setistimeup(false);
     waypoints.clear();
-    listener.log(listener.Info, "Restart! Waypoints Cleared!");
+    logger.log(Info, "Restart! Waypoints Cleared!");
     qnode.publishMarkerposition(waypoints);
   }
 }
@@ -577,18 +537,17 @@ void move_ur5_qt::MainWindow::on_pushButton_E_clicked() {
 void move_ur5_qt::MainWindow::on_pushButton_S_clicked() {
   ui.tab_manager->setCurrentIndex(1);  // show first tab.
   QString path = ui.lineEdit_Path->text();
-  listener.log(listener.Info,
-               "Total points:  " + std::to_string(waypoints.size()));
+  logger.log(Info, "Total points:  " + std::to_string(waypoints.size()));
   if (path.isEmpty()) {
     path = QFileDialog::getSaveFileName(this, tr("Save File"), ".",
                                         tr("XML Files(*.xml)"));
   }
   if (writer.writeFile(waypoints, path)) {
     ui.lineEdit_Path->setText(path);
-    listener.log(listener.Info, "SUCCESS! File saved to " + path.toStdString());
+    logger.log(Info, "SUCCESS! File saved to " + path.toStdString());
   } else {
     QMessageBox::critical(this, tr("Error"), tr("Invalid path %1").arg(path));
-    listener.log(listener.Fatal, "FAILED! File not saved!");
+    logger.log(Fatal, "FAILED! File not saved!");
   }
 }
 
@@ -615,15 +574,13 @@ void move_ur5_qt::MainWindow::on_lineEdit_Path_editingFinished() {
 
 void move_ur5_qt::MainWindow::on_spinBox_CD_editingFinished() {
   ui.tab_manager->setCurrentIndex(1);  // show first tab.
-  listener.log(listener.Info,
-               "Set timer: " + std::to_string(ui.spinBox_CD->value()));
+  logger.log(Info, "Set timer: " + std::to_string(ui.spinBox_CD->value()));
 }
 
 void move_ur5_qt::MainWindow::on_spinBox_Fre_editingFinished() {
-  ui.tab_manager->setCurrentIndex(1);  // show first tab.
-  setfrequency(ui.spinBox_Fre->value());
-  listener.log(listener.Info,
-               "Set frequency: " + std::to_string(ui.spinBox_Fre->value()));
+  ui.tab_manager->setCurrentIndex(1);  // show sec tab.
+  listener.setfrequency(ui.spinBox_Fre->value());
+  logger.log(Info, "Set frequency: " + std::to_string(ui.spinBox_Fre->value()));
 }
 
 void move_ur5_qt::MainWindow::on_pushButton_LF_clicked() {
@@ -637,17 +594,16 @@ void move_ur5_qt::MainWindow::on_pushButton_LF_clicked() {
                               QMessageBox::Yes)) {
       waypoints.clear();
     } else {
-      listener.log(listener.Fatal, "FAILED! File not load!");
+      logger.log(Fatal, "FAILED! File not load!");
       return;
     }
   }
   if (reader.readFile(waypoints)) {
-    listener.log(listener.Info, "SUCCESS! File loaded. ");
-    listener.log(listener.Info,
-                 "Total points:  " + std::to_string(waypoints.size()));
+    logger.log(Info, "SUCCESS! File loaded. ");
+    logger.log(Info, "Total points:  " + std::to_string(waypoints.size()));
     qnode.publishMarkerposition(waypoints);
   } else {
-    listener.log(listener.Fatal, "FAILED! File not load!");
+    logger.log(Fatal, "FAILED! File not load!");
     return;
   }
   if (!waypoints.empty()) ui.groupBox_PE->setEnabled(true);
@@ -756,4 +712,8 @@ void move_ur5_qt::MainWindow::on_pushButton_clearall_clicked() {
   on_pushButton_clearselected_clicked();
   collision_objects_mannager.update();
   logger.log(Info, "All collision objects cleared.");
+}
+
+void move_ur5_qt::MainWindow::on_pushButton_clearlog_clicked() {
+  logger.clearlog();
 }

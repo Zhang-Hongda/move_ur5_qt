@@ -46,14 +46,14 @@
        <locale language="English" country="Australia"/>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <property name="documentMode">
        <bool>false</bool>
       </property>
-      <widget class="QWidget" name="tab_robot">
+      <widget class="QWidget" name="tab_status">
        <attribute name="title">
-        <string>Robot Info</string>
+        <string>Status</string>
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
@@ -265,13 +265,13 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="tab_scene">
+      <widget class="QWidget" name="tab_log">
        <attribute name="title">
-        <string>Scene Info</string>
+        <string>System Log</string>
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_4">
         <item>
-         <widget class="QGroupBox" name="groupBox_Robotinfo">
+         <widget class="QGroupBox" name="groupBox_log">
           <property name="sizePolicy">
            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -283,7 +283,7 @@
           </property>
           <layout class="QGridLayout" name="gridLayout_2">
            <item row="2" column="0" colspan="2">
-            <widget class="QPushButton" name="pushButton_CR">
+            <widget class="QPushButton" name="pushButton_clearlog">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                <horstretch>0</horstretch>
@@ -296,7 +296,7 @@
             </widget>
            </item>
            <item row="2" column="3">
-            <widget class="QCheckBox" name="checkBox_RAC">
+            <widget class="QCheckBox" name="checkBox_autoclearlog">
              <property name="text">
               <string>Auto clear</string>
              </property>
@@ -407,7 +407,7 @@
         <property name="geometry">
          <rect>
           <x>0</x>
-          <y>-240</y>
+          <y>0</y>
           <width>346</width>
           <height>1200</height>
          </rect>
@@ -622,6 +622,9 @@
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 </property>
+                 <property name="minimum">
+                  <number>1</number>
                  </property>
                  <property name="maximum">
                   <number>9999</number>

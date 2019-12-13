@@ -37,3 +37,7 @@ void Logger::log(const LogLevel &level, const std::string &msg) {
                         new_row);
   Q_EMIT loggingUpdated();  // used to readjust the scrollbar
 }
+
+void Logger::clearlog(int except) {
+  logging_model.removeRows(0, logging_model.rowCount() - except);
+}

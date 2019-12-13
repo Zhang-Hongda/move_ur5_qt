@@ -36,25 +36,27 @@ class Tf_listener : public QThread {
   virtual ~Tf_listener();
   bool init();
   void run();
-  void clearRobotstatusview(int except = 0);
-  void getMarkerposition();
+  geometry_msgs::Pose getMarkerposition();
   void updatePositon(geometry_msgs::Pose pose);
   void updateOrientation(geometry_msgs::Pose pose);
 
  public Q_SLOTS:
   void startTracking();
+  void stopTracking();
+  void setfrequency(int freq);
 
 Q_SIGNALS:
-  void loggingUpdated();
   void positionUpdated(std::string position);
   void orientationUpdated(std::string orientation);
   void recordingFinished(std::vector<geometry_msgs::Pose> waypoints);
   void gotMarkerposition(geometry_msgs::Pose pose);
 
  private:
-  QStringListModel logging_model;
   std::shared_ptr<tf::TransformListener> listener;
   std::shared_ptr<ros::NodeHandle> node_handle;
+  geometry_msgs::Pose marker_pose;
+  int frequency;
+  bool stopsign;
 };
 
 }  // namespace move_ur5_qt
