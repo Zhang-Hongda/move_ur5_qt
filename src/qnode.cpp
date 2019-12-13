@@ -61,8 +61,6 @@ bool QNode::init() {
   }
   ros::start();  // explicitly needed
   node_handle = std::make_shared<ros::NodeHandle>();
-  planning_scene_diff_publisher =
-      node_handle->advertise<moveit_msgs::PlanningScene>("planning_scene", 1);
   marker_pub = node_handle->advertise<visualization_msgs::Marker>(
       "visualization_marker", 1);
   start();
@@ -80,8 +78,6 @@ bool QNode::init(const std::string &master_url, const std::string &host_url) {
   }
   ros::start();  // explicitly needed
   node_handle = std::make_shared<ros::NodeHandle>();
-  planning_scene_diff_publisher =
-      node_handle->advertise<moveit_msgs::PlanningScene>("planning_scene", 1);
   marker_pub = node_handle->advertise<visualization_msgs::Marker>(
       "visualization_marker", 1);
 
@@ -103,13 +99,13 @@ void QNode::run() {
   move_group->setGoalPositionTolerance(0.01);
   move_group->setGoalOrientationTolerance(0.05);
 
-  log(Info, "Tracking robot status.");
+  logger.log(Info, "Tracking robot status.");
   while (ros::ok()) {
     updatePositon();
     updateOrientation();
     updateJointvalues();
   }
-  log(Info, "Ros shutdown, proceeding to close the gui.");
+  logger.log(Info, "Ros shutdown, proceeding to close the gui.");
   Q_EMIT
   rosShutdown();  // used to signal the gui for a shutdown (useful to roslaunch)
 }
@@ -139,28 +135,23 @@ void QNode::publishMarkerposition(std::vector<geometry_msgs::Pose> waypoints) {
 // Move robot to a named target
 void QNode::move_Forward() {
   if (moveToNamedTarget(*move_group, "forward"))
-    log(Info, "Move Forward: SUCCEEDED");
+    logger.log(Info, "Move Forward: SUCCEEDED");
   else
-    log(Info, "Move Forward: FAILED");
+    logger.log(Info, "Move Forward: FAILED");
 }
 
 void QNode::move_Up() {
   if (moveToNamedTarget(*move_group, "up"))
-    log(Info, "Move Up: SUCCEEDED");
+    logger.log(Info, "Move Up: SUCCEEDED");
   else
-    log(Info, "Move Up: FAILED");
+    logger.log(Info, "Move Up: FAILED");
 }
 
 void QNode::move_Home() {
   if (moveToNamedTarget(*move_group, "home"))
-    log(Info, "Move Home: SUCCEEDED");
+    logger.log(Info, "Move Home: SUCCEEDED");
   else
-    log(Info, "Move Home: FAILED");
-}
-
-// Clear robot status log
-void QNode::clearRobotstatusview(int except) {
-  logging_model.removeRows(0, logging_model.rowCount() - except);
+    logger.log(Info, "Move Home: FAILED");
 }
 
 // Update robot status
@@ -197,7 +188,7 @@ void QNode::updateJointvalues() {
 
 // Plan trajectory
 void QNode::planTrajectory(std::vector<geometry_msgs::Pose> waypoints) {
-  log(Info, "Planning...");
+  logger.log(Info, "Planning...");
   move_group->setMaxVelocityScalingFactor(0.5);  // jonit speed control
   const double jump_threshold = 0.0;
   const double eef_step = 0.005;
@@ -205,15 +196,15 @@ void QNode::planTrajectory(std::vector<geometry_msgs::Pose> waypoints) {
                                                  jump_threshold, trajectory);
   plan.trajectory_ = trajectory;
   Q_EMIT planningFinished(rate * 100);
-  log(Info, "Planning Finished.");
-  log(Info, "Completed: " + std::to_string(rate * 100) + "%");
+  logger.log(Info, "Planning Finished.");
+  logger.log(Info, "Completed: %d%%", rate * 100);
 }
 
 // Execute the plan
 void QNode::executeTrajectory(std::vector<geometry_msgs::Pose> waypoints) {
   if (0 == waypoints.size() ||
       plan.trajectory_.joint_trajectory.points.empty()) {
-    log(Fatal, "Invalid plan!");
+    logger.log(Fatal, "Invalid plan!");
     Q_EMIT executionFinished();
     return;
   }
@@ -224,69 +215,33 @@ void QNode::executeTrajectory(std::vector<geometry_msgs::Pose> waypoints) {
       move_group->getCurrentState()->getRobotModel()->getJointModelGroup(
           move_group->getName()),
       group_variable_values);
-  log(Info, "Executing plan.");
+  logger.log(Info, "Executing plan.");
   if (!move_group->execute(plan)) {
-    log(Fatal, "Failed to execute the plan!");
+    logger.log(Fatal, "Failed to execute the plan!");
     Q_EMIT executionFinished();
     return;
   } else {
-    log(Info, "SUCCESS!");
+    logger.log(Info, "SUCCESS!");
   }
 
-  log(Info, "Moving back to the start state.");
+  logger.log(Info, "Moving back to the start state.");
   move_group->setStartStateToCurrentState();
   move_group->setJointValueTarget(group_variable_values);
   success = move_group->plan(temp_plan);
   if (success) {
     if (!move_group->execute(temp_plan)) {
-      log(Fatal, "Failed to move back to the start state!");
+      logger.log(Fatal, "Failed to move back to the start state!");
       Q_EMIT executionFinished();
       return;
     } else {
-      log(Info, "SUCCESS!");
+      logger.log(Info, "SUCCESS!");
     }
   } else {
-    log(Fatal, "Can not find a path to the start state!");
+    logger.log(Fatal, "Can not find a path to the start state!");
     Q_EMIT executionFinished();
     return;
   }
   Q_EMIT executionFinished();
-}
-
-void QNode::log(const LogLevel &level, const std::string &msg) {
-  logging_model.insertRows(logging_model.rowCount(), 1);
-  std::stringstream logging_model_msg;
-  switch (level) {
-    case (Debug): {
-      ROS_DEBUG_STREAM(msg);
-      logging_model_msg << "[DEBUG] [" << ros::Time::now() << "]: " << msg;
-      break;
-    }
-    case (Info): {
-      ROS_INFO_STREAM(msg);
-      logging_model_msg << "[INFO] [" << ros::Time::now() << "]: " << msg;
-      break;
-    }
-    case (Warn): {
-      ROS_WARN_STREAM(msg);
-      logging_model_msg << "[INFO] [" << ros::Time::now() << "]: " << msg;
-      break;
-    }
-    case (Error): {
-      ROS_ERROR_STREAM(msg);
-      logging_model_msg << "[ERROR] [" << ros::Time::now() << "]: " << msg;
-      break;
-    }
-    case (Fatal): {
-      ROS_FATAL_STREAM(msg);
-      logging_model_msg << "[FATAL] [" << ros::Time::now() << "]: " << msg;
-      break;
-    }
-  }
-  QVariant new_row(QString(logging_model_msg.str().c_str()));
-  logging_model.setData(logging_model.index(logging_model.rowCount() - 1),
-                        new_row);
-  Q_EMIT loggingUpdated();  // used to readjust the scrollbar
 }
 
 }  // namespace move_ur5_qt

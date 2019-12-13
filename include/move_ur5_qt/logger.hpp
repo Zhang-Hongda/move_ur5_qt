@@ -51,6 +51,8 @@ class Logger : public QObject {
                           new_row);
     Q_EMIT loggingUpdated();  // used to readjust the scrollbar
   }
+
+  void log(const LogLevel &level, const std::string &msg);
 Q_SIGNALS:
   void loggingUpdated();
 };

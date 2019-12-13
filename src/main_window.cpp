@@ -110,13 +110,6 @@ MainWindow::MainWindow(int argc, char **argv, QWidget *parent)
   QObject::connect(&qnode, SIGNAL(rosShutdown()), this, SLOT(close()));
 
   /*********************
-  ** Robot Info Logging
-  **********************/
-  ui.view_logging_RI->setModel(qnode.loggingModel());
-  QObject::connect(&qnode, SIGNAL(loggingUpdated()), this,
-                   SLOT(updateRIloggingView()));
-
-  /*********************
   ** Scene Info Logging
   **********************/
   ui.view_logging_SI->setModel(listener.loggingModel());
@@ -227,7 +220,7 @@ void MainWindow::on_button_connect_clicked() {
     } else {
       ui.button_connect->setEnabled(false);
       collision_objects_mannager.init();
-      qnode.log(qnode.Info, "Connection Established.");
+      logger.log(Info, "Connection Established.");
       enableAllwidgets();
       ReadSettingsAfterStartup();
     }
@@ -241,7 +234,7 @@ void MainWindow::on_button_connect_clicked() {
       ui.line_edit_host->setReadOnly(true);
       collision_objects_mannager.init(ui.line_edit_master->text().toStdString(),
                                       ui.line_edit_host->text().toStdString());
-      qnode.log(qnode.Info, "Connection Established.");
+      logger.log(Info, "Connection Established.");
       enableAllwidgets();
       ReadSettingsAfterStartup();
     }
@@ -263,12 +256,7 @@ void MainWindow::on_checkbox_use_environment_stateChanged(int state) {
 ** Implemenation [Slots][manually connected]
 *****************************************************************************/
 // Log update
-void MainWindow::updateRIloggingView() {
-  if (ui.checkBox_RAC->isChecked()) {
-    qnode.clearRobotstatusview(10);
-  }
-  ui.view_logging_RI->scrollToBottom();
-}
+
 void MainWindow::updateSIloggingView() {
   if (ui.checkBox_SAC->isChecked()) {
     listener.clearRobotstatusview(10);
@@ -428,14 +416,6 @@ void move_ur5_qt::MainWindow::updatelineEdit_MO(std::string orientation) {
   ui.lineEdit_MO->setText(QString::fromStdString(orientation));
 }
 
-void move_ur5_qt::MainWindow::on_pushButton_CR_clicked() {
-  qnode.clearRobotstatusview();
-}
-
-void move_ur5_qt::MainWindow::on_pushButton_CS_clicked() {
-  listener.clearRobotstatusview();
-}
-
 void move_ur5_qt::MainWindow::on_pushButton_CO_clicked() {
   //  qnode.removeObjects();
 }
@@ -579,11 +559,11 @@ void move_ur5_qt::MainWindow::update_progressBar_R(float rate) {
   ui.tab_manager->setCurrentIndex(0);  // show first tab.
   ui.progressBar_R->setValue(rate);
   if (rate < ui.spinBox_Rate->value()) {
-    qnode.log(qnode.Fatal, "FAILED!");
+    logger.log(Info, "FAILED!");
     ui.pushButton_E->setEnabled(false);
     ui.pushButton_PE->setEnabled(false);
   } else {
-    qnode.log(qnode.Info, "SUCCESS!");
+    logger.log(Info, "SUCCESS!");
     ui.pushButton_E->setEnabled(true);
     ui.pushButton_PE->setEnabled(true);
   }
@@ -614,24 +594,23 @@ void move_ur5_qt::MainWindow::on_pushButton_S_clicked() {
 
 void move_ur5_qt::MainWindow::on_checkBox_Threshod_toggled(bool checked) {
   ui.tab_manager->setCurrentIndex(0);  // show first tab.
-  qnode.log(qnode.Info, "Use threshod.");
+  logger.log(Info, "Use threshod.");
   if (checked) {
     ui.spinBox_Rate->setEnabled(true);
   } else {
     ui.spinBox_Rate->setEnabled(false);
-    qnode.log(qnode.Info, "Disable threshod.");
+    logger.log(Info, "Disable threshod.");
   }
 }
 
 void move_ur5_qt::MainWindow::on_spinBox_Rate_editingFinished() {
   ui.tab_manager->setCurrentIndex(0);  // show first tab.
-  qnode.log(qnode.Info,
-            "Set threshod: " + std::to_string(ui.spinBox_Rate->value()));
+  logger.log(Info, "Set threshod: " + std::to_string(ui.spinBox_Rate->value()));
 }
 
 void move_ur5_qt::MainWindow::on_lineEdit_Path_editingFinished() {
   ui.tab_manager->setCurrentIndex(0);  // show first tab.
-  qnode.log(qnode.Info, "Set path: " + ui.lineEdit_Path->text().toStdString());
+  logger.log(Info, "Set path: " + ui.lineEdit_Path->text().toStdString());
 }
 
 void move_ur5_qt::MainWindow::on_spinBox_CD_editingFinished() {

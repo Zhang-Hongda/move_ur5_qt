@@ -51,7 +51,6 @@ class MainWindow : public QMainWindow {
   /******************************************
   ** Manual connections
   *******************************************/
-  void updateRIloggingView();
   void updateSIloggingView();
   void updateloggingView();
   void updatelineEdit_Position(std::string position);  // update robot status
@@ -76,9 +75,7 @@ class MainWindow : public QMainWindow {
   void on_quit_button_clicked();
   void on_pushButtonMU_clicked();
   void on_pushButton_MH_clicked();
-  void on_pushButton_CR_clicked();
   void on_pushButton_CO_clicked();
-  void on_pushButton_CS_clicked();
   void on_pushButton_R_toggled(bool checked);
   void on_checkBox_UT_toggled(bool checked);
   void on_pushButton_F_toggled(bool checked);

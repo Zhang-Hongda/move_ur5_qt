@@ -16,6 +16,7 @@
 #include <QThread>
 #include <QMutex>
 #include <QStringListModel>
+#include "globalobj.hpp"
 Q_DECLARE_METATYPE(std::vector<geometry_msgs::Pose>)
 Q_DECLARE_METATYPE(geometry_msgs::Pose)
 /*****************************************************************************
@@ -35,9 +36,6 @@ class Tf_listener : public QThread {
   virtual ~Tf_listener();
   bool init();
   void run();
-  enum LogLevel { Debug, Info, Warn, Error, Fatal };  // Logging
-  QStringListModel *loggingModel() { return &logging_model; }
-  void log(const LogLevel &level, const std::string &msg);
   void clearRobotstatusview(int except = 0);
   void getMarkerposition();
   void updatePositon(geometry_msgs::Pose pose);
