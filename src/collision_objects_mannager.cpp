@@ -1,5 +1,6 @@
 #include "../include/move_ur5_qt/collision_objects_mannager.hpp"
 #include <algorithm>
+
 namespace move_ur5_qt {
 // function that return a co
 moveit_msgs::CollisionObject create_primitive_collision_object(
@@ -210,7 +211,6 @@ void Collision_Objects_Mannager::remove_all_objects() {
 // update objects
 void Collision_Objects_Mannager::update() {
   using std::pair;
-
   remove_all_objects();
   // get moveit object set, scence color set
   vector<moveit_msgs::CollisionObject> objects_set;
@@ -236,11 +236,11 @@ void Collision_Objects_Mannager::update() {
 // add single obj
 void Collision_Objects_Mannager::add_collision_object(collision_object obj) {
   using std::pair;
-  ROS_INFO("Add %s to %s", obj.name.c_str(), obj.frame.c_str());
   // edit golbal set
   collision_object_set[obj.name] = obj;
+  //  logger.log(Info, StringBuffer::Format("Add %s to %s", obj.name.c_str(),
+  //                                        obj.frame.c_str()));
   update();
-  ROS_INFO("Done");
 }
 
 // add objects form vector
@@ -278,7 +278,7 @@ bool Collision_Objects_Mannager::load_collision_objects_form_file(string dir) {
   if (obj_arg.size() != 6 || !string2vector(obj_arg["dimensions"], dim_v) ||
       !string2vector(obj_arg["color"], col_v) ||
       !string2vector(obj_arg["pose"], pos_v)) {
-    ROS_ERROR("format error in collision object file.");
+    //    logger.log(Error, "format error in collision object file.");
     return false;
   }
   collision_object obj;
@@ -289,7 +289,7 @@ bool Collision_Objects_Mannager::load_collision_objects_form_file(string dir) {
   obj.color = col_v;
   obj.pose = pos_v;
   collision_object_set[obj.name] = obj;
-  ROS_INFO("object loaded: %s", dir.c_str());
+  logger.log(Info, "object loaded: %s", dir.c_str());
   return true;
 }
 

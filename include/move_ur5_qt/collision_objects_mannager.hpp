@@ -1,9 +1,9 @@
 #ifndef COLLISION_OBJECTS_MANNAGER_HPP
 #define COLLISION_OBJECTS_MANNAGER_HPP
 
-#include <fstream>
 #include "getfile.hpp"
-#include <math.h>
+#include "globalobj.hpp"
+
 #ifndef Q_MOC_RUN
 #include <moveit/move_group_interface/move_group_interface.h>
 #include <moveit/planning_scene_interface/planning_scene_interface.h>
@@ -14,6 +14,8 @@
 #include <string>
 #include <vector>
 #include <QThread>
+#include <fstream>
+#include <math.h>
 
 namespace move_ur5_qt {
 

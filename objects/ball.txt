@@ -1,0 +1,6 @@
+frame:pen
+name:ball
+shape:SPHERE
+color:[0,255,0]
+dimensions:[0.1]
+pose:[0,0,0,0,0,0]

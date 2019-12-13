@@ -1,0 +1,6 @@
+frame:base_link
+name:table
+shape:BOX
+color:[255,255,0]
+dimensions:[1,1,0.02]
+pose:[0,0,-0.01,0,0,0]
