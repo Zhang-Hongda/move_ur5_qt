@@ -14,7 +14,8 @@
 #include "trajectoryxmlwriter.hpp"
 #include "trajectoryxmlreader.hpp"
 #include "collision_objects_mannager.hpp"
-
+#include "globaldata.hpp"
+#include "globalobj.hpp"
 /*****************************************************************************
 ** Namespace
 *****************************************************************************/
@@ -52,6 +53,7 @@ class MainWindow : public QMainWindow {
   *******************************************/
   void updateRIloggingView();
   void updateSIloggingView();
+  void updateloggingView();
   void updatelineEdit_Position(std::string position);  // update robot status
   void updatelineEdit_Orientation(std::string orientation);
   void updatelineEdit_Jointvalues(std::string jointvalues);

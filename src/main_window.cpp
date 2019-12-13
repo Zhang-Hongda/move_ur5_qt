@@ -122,6 +122,14 @@ MainWindow::MainWindow(int argc, char **argv, QWidget *parent)
   ui.view_logging_SI->setModel(listener.loggingModel());
   QObject::connect(&listener, SIGNAL(loggingUpdated()), this,
                    SLOT(updateSIloggingView()));
+
+  /*********************
+  ** Scene Info Logging
+  **********************/
+  ui.listView_log->setModel(&logging_model);
+  QObject::connect(&logger, SIGNAL(loggingUpdated()), this,
+                   SLOT(updateloggingView()));
+
   /*********************
   ** Auto Start
   **********************/
@@ -267,6 +275,8 @@ void MainWindow::updateSIloggingView() {
   }
   ui.view_logging_SI->scrollToBottom();
 }
+void MainWindow::updateloggingView() { ui.listView_log->scrollToBottom(); }
+
 /*****************************************************************************
 ** Implementation [Menu]
 *****************************************************************************/
@@ -766,4 +776,5 @@ void move_ur5_qt::MainWindow::on_pushButton_clearall_clicked() {
   on_pushButton_selectall_clicked();
   on_pushButton_clearselected_clicked();
   collision_objects_mannager.update();
+  logger.log(Info, "All collision objects cleared.");
 }

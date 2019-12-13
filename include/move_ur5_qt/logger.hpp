@@ -2,7 +2,7 @@
 #define LOGGER_H
 
 #include <QObject>
-#include "globaldata.h"
+#include "globaldata.hpp"
 
 class Logger : public QObject {
   Q_OBJECT
@@ -10,9 +10,8 @@ class Logger : public QObject {
   explicit Logger(QObject *parent = nullptr);
   void log(const LogLevel &level, const std::string &msg);
 
-signals:
+Q_SIGNALS:
   void loggingUpdated();
- public slots:
 };
 
 #endif  // LOGGER_H

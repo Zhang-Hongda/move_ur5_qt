@@ -1,5 +1,6 @@
-#include "logger.hpp"
+#include "../include/move_ur5_qt/logger.hpp"
 #include <sstream>
+#include <ros/ros.h>
 
 Logger::Logger(QObject *parent) : QObject(parent) {}
 
@@ -8,28 +9,28 @@ void Logger::log(const LogLevel &level, const std::string &msg) {
   std::stringstream logging_model_msg;
   switch (level) {
     case (Debug): {
-      logging_model_msg << "[DEBUG] ["
-                        << "]: " << msg;
+      ROS_DEBUG_STREAM(msg);
+      logging_model_msg << "[DEBUG] [" << ros::Time::now() << "]: " << msg;
       break;
     }
     case (Info): {
-      logging_model_msg << "[INFO] ["
-                        << "]: " << msg;
+      ROS_INFO_STREAM(msg);
+      logging_model_msg << "[INFO] [" << ros::Time::now() << "]: " << msg;
       break;
     }
     case (Warn): {
-      logging_model_msg << "[INFO] ["
-                        << "]: " << msg;
+      ROS_WARN_STREAM(msg);
+      logging_model_msg << "[INFO] [" << ros::Time::now() << "]: " << msg;
       break;
     }
     case (Error): {
-      logging_model_msg << "[ERROR] ["
-                        << "]: " << msg;
+      ROS_ERROR_STREAM(msg);
+      logging_model_msg << "[ERROR] [" << ros::Time::now() << "]: " << msg;
       break;
     }
     case (Fatal): {
-      logging_model_msg << "[FATAL] ["
-                        << "]: " << msg;
+      ROS_FATAL_STREAM(msg);
+      logging_model_msg << "[FATAL] [" << ros::Time::now() << "]: " << msg;
       break;
     }
   }
