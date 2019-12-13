@@ -162,8 +162,8 @@ void Collision_Objects_Mannager::init() {
   planning_scene_interface_ptr =
       std::make_shared<moveit::planning_interface::PlanningSceneInterface>();
   ros::Duration(1.0).sleep();  // wait for init
-  planning_scene_diff_publisher = nh_ptr->advertise<moveit_msgs::PlanningScene>(
-      "/move_group/monitored_planning_scene", 1);
+  planning_scene_diff_publisher =
+      nh_ptr->advertise<moveit_msgs::PlanningScene>("planning_scene", 1);
 }
 
 void Collision_Objects_Mannager::init(const std::string &master_url,
@@ -194,19 +194,23 @@ vector<string> Collision_Objects_Mannager::get_objects_names() {
 
 // rm obj
 void Collision_Objects_Mannager::remove_object(string object_name) {
-  if (!collision_object_set.erase(object_name))
+  if (collision_object_set.erase(object_name))
+    planning_scene_interface_ptr->removeCollisionObjects({object_name});
+  else
     ROS_INFO("object %s not exist", object_name.c_str());
 }
 
 // rm all obj
 void Collision_Objects_Mannager::remove_all_objects() {
-  vector<string> objects_id_set = get_objects_names();
+  vector<string> objects_id_set =
+      planning_scene_interface_ptr->getKnownObjectNames();
   planning_scene_interface_ptr->removeCollisionObjects(objects_id_set);
 }
 
 // update objects
 void Collision_Objects_Mannager::update() {
   using std::pair;
+
   remove_all_objects();
   // get moveit object set, scence color set
   vector<moveit_msgs::CollisionObject> objects_set;

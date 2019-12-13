@@ -756,8 +756,14 @@ void move_ur5_qt::MainWindow::on_pushButton_clearselected_clicked() {
     delete item;
   }
   collision_objects_mannager.update();
-  std::stringstream ss;
-  for (string n : collision_objects_mannager.get_objects_names())
-    ss << n << "\t";
-  ROS_INFO("%s", ss.str().c_str());
+  //  std::stringstream ss;
+  //  for (string n : collision_objects_mannager.get_objects_names())
+  //    ss << n << "\t";
+  //  ROS_INFO("%s", ss.str().c_str());
+}
+
+void move_ur5_qt::MainWindow::on_pushButton_clearall_clicked() {
+  on_pushButton_selectall_clicked();
+  on_pushButton_clearselected_clicked();
+  collision_objects_mannager.update();
 }

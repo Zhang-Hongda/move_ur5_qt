@@ -105,6 +105,8 @@ class MainWindow : public QMainWindow {
 
   void on_pushButton_clearselected_clicked();
 
+  void on_pushButton_clearall_clicked();
+
 Q_SIGNALS:
   void startTracking();
   void addObjectsFinished();
