@@ -43,7 +43,7 @@ inline geometry_msgs::Pose transform2pose(tf::StampedTransform transform) {
   return pose;
 }
 
-QNode::QNode(int argc, char **argv) : init_argc(argc), init_argv(argv) {}
+QNode::QNode() {}
 
 QNode::~QNode() {
   if (ros::isStarted()) {
@@ -54,35 +54,12 @@ QNode::~QNode() {
 }
 
 // Init ros node
-bool QNode::init() {
-  ros::init(init_argc, init_argv, "move_ur5_qt");
-  if (!ros::master::check()) {
-    return false;
-  }
-  ros::start();  // explicitly needed
+void QNode::init() {
   node_handle = std::make_shared<ros::NodeHandle>();
   marker_pub = node_handle->advertise<visualization_msgs::Marker>(
       "visualization_marker", 1);
   start();
-  return true;
-}
-
-bool QNode::init(const std::string &master_url, const std::string &host_url) {
-  std::map<std::string, std::string> remappings;
-  remappings["__master"] = master_url;
-  remappings["__hostname"] = host_url;
-  ros::init(remappings, "move_ur5_qt");
-
-  if (!ros::master::check()) {
-    return false;
-  }
-  ros::start();  // explicitly needed
-  node_handle = std::make_shared<ros::NodeHandle>();
-  marker_pub = node_handle->advertise<visualization_msgs::Marker>(
-      "visualization_marker", 1);
-
-  start();
-  return true;
+  return;
 }
 
 // Tracking robot state and update the information
@@ -98,16 +75,12 @@ void QNode::run() {
   move_group->allowReplanning(true);
   move_group->setGoalPositionTolerance(0.01);
   move_group->setGoalOrientationTolerance(0.05);
-
   logger.log(Info, "Tracking robot status.");
   while (ros::ok()) {
     updatePositon();
     updateOrientation();
     updateJointvalues();
   }
-  logger.log(Info, "Ros shutdown, proceeding to close the gui.");
-  Q_EMIT
-  rosShutdown();  // used to signal the gui for a shutdown (useful to roslaunch)
 }
 
 // Publish line

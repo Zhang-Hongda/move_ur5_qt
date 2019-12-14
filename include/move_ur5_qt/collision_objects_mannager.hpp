@@ -70,7 +70,6 @@ class Collision_Objects_Mannager : public QThread {
   explicit Collision_Objects_Mannager(int argc, char **argv);
   virtual ~Collision_Objects_Mannager();
   void init();
-  void init(const std::string &master_url, const std::string &host_url);
   void update();
   void add_collision_object(collision_object obj);
   void add_collision_object(vector<collision_object> obj_list);

@@ -19,22 +19,18 @@
 #include "globalobj.hpp"
 Q_DECLARE_METATYPE(std::vector<geometry_msgs::Pose>)
 Q_DECLARE_METATYPE(geometry_msgs::Pose)
-/*****************************************************************************
-** Namespaces
-*****************************************************************************/
-namespace move_ur5_qt {
-extern QMutex m_mutex;
-extern bool stopSign;
-extern int frequency;
+
 /*****************************************************************************
 ** Class
 *****************************************************************************/
+extern QMutex m_mutex;
+
 class Tf_listener : public QThread {
   Q_OBJECT
  public:
   Tf_listener();
   virtual ~Tf_listener();
-  bool init();
+  void init();
   void run();
   geometry_msgs::Pose getMarkerposition();
   void updatePositon(geometry_msgs::Pose pose);
@@ -44,6 +40,8 @@ class Tf_listener : public QThread {
   void startTracking();
   void stopTracking();
   void setfrequency(int freq);
+  void setmarkerframe(std::string frame);
+  void setbaseframe(std::string frame);
 
 Q_SIGNALS:
   void positionUpdated(std::string position);
@@ -53,12 +51,14 @@ Q_SIGNALS:
 
  private:
   std::shared_ptr<tf::TransformListener> listener;
-  std::shared_ptr<ros::NodeHandle> node_handle;
   geometry_msgs::Pose marker_pose;
-  int frequency;
+  int frequency = 1;
   bool stopsign;
-};
+  std::string target_frame = "/marker";
+  std::string base_frame = "/base_link";
 
-}  // namespace move_ur5_qt
+ public:
+  //  QMutex m_mutex;
+};
 
 #endif  // TF_LISTENER_H

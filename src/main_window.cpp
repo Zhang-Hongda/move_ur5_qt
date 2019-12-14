@@ -36,11 +36,6 @@ inline void setisEnable(bool sign) {
   isEnable = sign;
 }
 
-inline void setstopSign(bool sign) {
-  QMutexLocker locker(&m_mutex);
-  stopSign = sign;
-}
-
 inline bool getistimeup() {
   QMutexLocker locker(&t_mutex);
   return istimeup;
@@ -62,8 +57,9 @@ inline double dist(geometry_msgs::Pose pose1, geometry_msgs::Pose pose2) {
 
 MainWindow::MainWindow(int argc, char **argv, QWidget *parent)
     : QMainWindow(parent),
-      qnode(argc, argv),
-      listener(),
+      init_argc(argc),
+      init_argv(argv),
+      qnode(),
       timer(),
       writer(),
       reader(),
@@ -78,13 +74,8 @@ MainWindow::MainWindow(int argc, char **argv, QWidget *parent)
 
   ReadSettings();
   setWindowIcon(QIcon(":/images/icon.png"));
-  ui.tab_manager->setCurrentIndex(0);  // show first tab.
+  ui.tab_manager->setCurrentIndex(1);  // show first tab.
   disableAllwidgets();                 // wait for ros thread
-
-  /*********************
-  ** Shut Down
-  **********************/
-  QObject::connect(&qnode, SIGNAL(rosShutdown()), this, SLOT(close()));
 
   /*********************
   ** Logging
@@ -93,12 +84,6 @@ MainWindow::MainWindow(int argc, char **argv, QWidget *parent)
   QObject::connect(&logger, SIGNAL(loggingUpdated()), this,
                    SLOT(updateloggingView()));
 
-  /*********************
-  ** Auto Start
-  **********************/
-  if (ui.checkbox_remember_settings->isChecked()) {
-    on_button_connect_clicked();
-  }
   /*********************
   ** Robot Status
   **********************/
@@ -180,30 +165,31 @@ void MainWindow::showNoMasterMessage() {
 
 void MainWindow::on_button_connect_clicked() {
   if (ui.checkbox_use_environment->isChecked()) {
-    if (!qnode.init()) {
-      showNoMasterMessage();
-    } else {
-      ui.button_connect->setEnabled(false);
-      collision_objects_mannager.init();
-      logger.log(Info, "Connection Established.");
-      enableAllwidgets();
-      ReadSettingsAfterStartup();
-    }
+    ros::init(init_argc, init_argv, "move_ur5_qt_node");
   } else {
-    if (!qnode.init(ui.line_edit_master->text().toStdString(),
-                    ui.line_edit_host->text().toStdString())) {
-      showNoMasterMessage();
-    } else {
-      ui.button_connect->setEnabled(false);
-      ui.line_edit_master->setReadOnly(true);
-      ui.line_edit_host->setReadOnly(true);
-      collision_objects_mannager.init(ui.line_edit_master->text().toStdString(),
-                                      ui.line_edit_host->text().toStdString());
-      logger.log(Info, "Connection Established.");
-      enableAllwidgets();
-      ReadSettingsAfterStartup();
-    }
+    std::string master_url = ui.line_edit_master->text().toStdString();
+    std::string host_url = ui.line_edit_host->text().toStdString();
+    std::map<std::string, std::string> remappings;
+    remappings["__master"] = master_url;
+    remappings["__hostname"] = host_url;
+    ros::init(remappings, "move_ur5_qt_node");
   }
+  if (!ros::master::check()) {
+    showNoMasterMessage();
+    return;
+  }
+  ros::start();  // explicitly needed
+  qnode.init();
+  qnode.setParent(this);
+  listener.init();
+  listener.setParent(this);
+  collision_objects_mannager.init();
+  collision_objects_mannager.setParent(this);
+  logger.log(Info, "Connection Established.");
+  enableAllwidgets();
+  ui.line_edit_master->setEnabled(false);
+  ui.line_edit_host->setEnabled(false);
+  ReadSettingsAfterStartup();
 }
 
 void MainWindow::on_checkbox_use_environment_stateChanged(int state) {
@@ -224,7 +210,7 @@ void MainWindow::on_checkbox_use_environment_stateChanged(int state) {
 
 void MainWindow::updateloggingView() {
   if (ui.checkBox_autoclearlog->isChecked()) {
-    logger.clearlog(10);
+    logger.clearlog(15);
   }
   ui.listView_log->scrollToBottom();
 }
@@ -249,10 +235,10 @@ void MainWindow::ReadSettings() {
   restoreGeometry(settings.value("geometry").toByteArray());
   restoreState(settings.value("windowState").toByteArray());
   QString master_url =
-      settings.value("master_url", QString("http://192.168.1.2:11311/"))
+      settings.value("master_url", QString("http://eric-inspiron-7560:11311"))
           .toString();
   QString host_url =
-      settings.value("host_url", QString("192.168.1.3")).toString();
+      settings.value("host_url", QString("127.0.0.1")).toString();
   ui.line_edit_master->setText(master_url);
   ui.line_edit_host->setText(host_url);
   bool remember = settings.value("remember_settings", false).toBool();
@@ -266,6 +252,7 @@ void MainWindow::ReadSettings() {
 }
 
 void MainWindow::ReadSettingsAfterStartup() {
+  if (!ui.checkbox_remember_settings->isChecked()) return;
   QSettings settings("Qt-Ros Package", "move_ur5_qt");
   bool checked_ut =
       settings.value("use_timer", false).toBool();  // use timer or not
@@ -297,6 +284,13 @@ void MainWindow::ReadSettingsAfterStartup() {
                          "pcl_tracker/collision_objects")).toString();
   ui.lineEdit_objpath->setText(objpath);
   ui.checkBox_autoload->setChecked(settings.value("auto_load", false).toBool());
+  ui.lineEdit_markerframename->setText(
+      settings.value("marker_frame", QString("/marker")).toString());
+  ui.lineEdit_baseframename->setText(
+      settings.value("base_frame", QString("/base_link")).toString());
+  on_lineEdit_markerframename_editingFinished();
+  on_lineEdit_baseframename_editingFinished();
+  listener.setfrequency(ui.spinBox_Fre->value());
 }
 
 void MainWindow::WriteSettings() {
@@ -321,11 +315,12 @@ void MainWindow::WriteSettings() {
       "object_file_path",
       ui.lineEdit_objpath->text());  // auto load collision object file path
   settings.setValue("auto_load", ui.checkBox_autoload->isChecked());
+  settings.setValue("marker_frame", ui.lineEdit_markerframename->text());
+  settings.setValue("base_frame", ui.lineEdit_baseframename->text());
 }
 
 void MainWindow::closeEvent(QCloseEvent *event) {
   WriteSettings();
-  on_pushButton_clearall_clicked();
   QMainWindow::closeEvent(event);
 }
 
@@ -335,7 +330,6 @@ void move_ur5_qt::MainWindow::on_pushButton_ST_toggled(bool checked) {
   if (checked) {
     ui.tab_manager->setCurrentIndex(1);  // show second tab.
     listener.startTracking();
-    listener.setfrequency(ui.spinBox_Fre->value());
     ui.pushButton_F->setEnabled(true);
     ui.pushButton_ST->setText("Stop Tracking");
   } else {
@@ -355,7 +349,10 @@ void move_ur5_qt::MainWindow::on_pushButtonMU_clicked() { qnode.move_Up(); }
 
 void move_ur5_qt::MainWindow::on_pushButton_MH_clicked() { qnode.move_Home(); }
 
-void move_ur5_qt::MainWindow::on_quit_button_clicked() {}
+void move_ur5_qt::MainWindow::on_quit_button_clicked() {
+  on_pushButton_clearall_clicked();
+  qApp->quit();
+}
 
 void move_ur5_qt::MainWindow::updatelineEdit_Position(std::string position) {
   ui.lineEdit_Position->setText(QString::fromStdString(position));
@@ -379,10 +376,6 @@ void move_ur5_qt::MainWindow::updatelineEdit_MO(std::string orientation) {
   ui.lineEdit_MO->setText(QString::fromStdString(orientation));
 }
 
-void move_ur5_qt::MainWindow::on_pushButton_CO_clicked() {
-  //  qnode.removeObjects();
-}
-
 void move_ur5_qt::MainWindow::disableAllwidgets() {
   ui.groupBox_RPDcontrolPanel->setEnabled(false);
   ui.groupBox_log->setEnabled(false);
@@ -393,6 +386,7 @@ void move_ur5_qt::MainWindow::disableAllwidgets() {
   ui.quit_button->setEnabled(false);
   ui.groupBox_SL->setEnabled(false);
   ui.groupBox_hgr->setEnabled(false);
+  ui.groupBox_basiccontrol->setEnabled(false);
 }
 
 void move_ur5_qt::MainWindow::enableAllwidgets() {
@@ -405,6 +399,8 @@ void move_ur5_qt::MainWindow::enableAllwidgets() {
   ui.groupBox_SL->setEnabled(true);
   ui.pushButton_F->setEnabled(false);
   ui.groupBox_hgr->setEnabled(true);
+  ui.groupBox_basiccontrol->setEnabled(true);
+  ui.button_connect->setEnabled(false);
 }
 
 void move_ur5_qt::MainWindow::recordMarkerposition(geometry_msgs::Pose pose) {
@@ -486,7 +482,6 @@ void move_ur5_qt::MainWindow::on_checkBox_UT_toggled(bool checked) {
 void move_ur5_qt::MainWindow::on_pushButton_F_toggled(bool checked) {
   ui.tab_manager->setCurrentIndex(1);  // show first tab.
   if (checked) {
-    ui.pushButton_R->setChecked(false);
     ui.groupBox_PE->setEnabled(true);
     ui.pushButton_E->setEnabled(false);
     ui.pushButton_R->setChecked(false);
@@ -509,14 +504,14 @@ void move_ur5_qt::MainWindow::on_pushButton_F_toggled(bool checked) {
 }
 
 void move_ur5_qt::MainWindow::on_pushButton_P_clicked() {
-  ui.tab_manager->setCurrentIndex(0);  // show first tab.
+  ui.tab_manager->setCurrentIndex(1);  // show first tab.
   qnode.publishMarkerposition(waypoints);
   qnode.planTrajectory(waypoints);
   if (!ui.checkBox_Threshod->isChecked()) ui.pushButton_E->setEnabled(true);
 }
 
 void move_ur5_qt::MainWindow::update_progressBar_R(float rate) {
-  ui.tab_manager->setCurrentIndex(0);  // show first tab.
+  ui.tab_manager->setCurrentIndex(1);  // show first tab.
   ui.progressBar_R->setValue(rate);
   if (rate < ui.spinBox_Rate->value()) {
     logger.log(Info, "FAILED!");
@@ -530,7 +525,7 @@ void move_ur5_qt::MainWindow::update_progressBar_R(float rate) {
 }
 
 void move_ur5_qt::MainWindow::on_pushButton_E_clicked() {
-  ui.tab_manager->setCurrentIndex(0);  // show first tab.
+  ui.tab_manager->setCurrentIndex(1);  // show first tab.
   qnode.executeTrajectory(waypoints);
 }
 
@@ -552,7 +547,7 @@ void move_ur5_qt::MainWindow::on_pushButton_S_clicked() {
 }
 
 void move_ur5_qt::MainWindow::on_checkBox_Threshod_toggled(bool checked) {
-  ui.tab_manager->setCurrentIndex(0);  // show first tab.
+  ui.tab_manager->setCurrentIndex(1);  // show first tab.
   logger.log(Info, "Use threshod.");
   if (checked) {
     ui.spinBox_Rate->setEnabled(true);
@@ -563,12 +558,12 @@ void move_ur5_qt::MainWindow::on_checkBox_Threshod_toggled(bool checked) {
 }
 
 void move_ur5_qt::MainWindow::on_spinBox_Rate_editingFinished() {
-  ui.tab_manager->setCurrentIndex(0);  // show first tab.
+  ui.tab_manager->setCurrentIndex(1);  // show first tab.
   logger.log(Info, "Set threshod: " + std::to_string(ui.spinBox_Rate->value()));
 }
 
 void move_ur5_qt::MainWindow::on_lineEdit_Path_editingFinished() {
-  ui.tab_manager->setCurrentIndex(0);  // show first tab.
+  ui.tab_manager->setCurrentIndex(1);  // show first tab.
   logger.log(Info, "Set path: " + ui.lineEdit_Path->text().toStdString());
 }
 
@@ -580,7 +575,6 @@ void move_ur5_qt::MainWindow::on_spinBox_CD_editingFinished() {
 void move_ur5_qt::MainWindow::on_spinBox_Fre_editingFinished() {
   ui.tab_manager->setCurrentIndex(1);  // show sec tab.
   listener.setfrequency(ui.spinBox_Fre->value());
-  logger.log(Info, "Set frequency: " + std::to_string(ui.spinBox_Fre->value()));
 }
 
 void move_ur5_qt::MainWindow::on_pushButton_LF_clicked() {
@@ -701,19 +695,22 @@ void move_ur5_qt::MainWindow::on_pushButton_clearselected_clicked() {
     delete item;
   }
   collision_objects_mannager.update();
-  //  std::stringstream ss;
-  //  for (string n : collision_objects_mannager.get_objects_names())
-  //    ss << n << "\t";
-  //  ROS_INFO("%s", ss.str().c_str());
 }
 
 void move_ur5_qt::MainWindow::on_pushButton_clearall_clicked() {
   on_pushButton_selectall_clicked();
   on_pushButton_clearselected_clicked();
-  collision_objects_mannager.update();
   logger.log(Info, "All collision objects cleared.");
 }
 
 void move_ur5_qt::MainWindow::on_pushButton_clearlog_clicked() {
   logger.clearlog();
+}
+
+void move_ur5_qt::MainWindow::on_lineEdit_markerframename_editingFinished() {
+  listener.setmarkerframe(ui.lineEdit_markerframename->text().toStdString());
+}
+
+void move_ur5_qt::MainWindow::on_lineEdit_baseframename_editingFinished() {
+  listener.setbaseframe(ui.lineEdit_baseframename->text().toStdString());
 }

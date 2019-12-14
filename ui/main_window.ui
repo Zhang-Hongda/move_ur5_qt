@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>941</width>
-    <height>520</height>
+    <height>486</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -46,7 +46,7 @@
        <locale language="English" country="Australia"/>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <property name="documentMode">
        <bool>false</bool>
@@ -128,82 +128,6 @@
              </property>
             </widget>
            </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_7">
-             <item>
-              <widget class="QPushButton" name="pushButton_MF">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>161</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-               <property name="toolTip">
-                <string>Move robot to &quot;forward&quot; position.</string>
-               </property>
-               <property name="statusTip">
-                <string>Move robot to &quot;forward&quot; position.</string>
-               </property>
-               <property name="whatsThis">
-                <string>Move robot to &quot;forward&quot; position.</string>
-               </property>
-               <property name="text">
-                <string>Move Forward</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="pushButtonMU">
-               <property name="maximumSize">
-                <size>
-                 <width>160</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-               <property name="toolTip">
-                <string>Move robot to &quot;up&quot; position.</string>
-               </property>
-               <property name="statusTip">
-                <string>Move robot to &quot;up&quot; position.</string>
-               </property>
-               <property name="whatsThis">
-                <string>Move robot to &quot;up&quot; position.</string>
-               </property>
-               <property name="text">
-                <string>Move Up</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="pushButton_MH">
-               <property name="maximumSize">
-                <size>
-                 <width>161</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-               <property name="toolTip">
-                <string>Move robot to &quot;home&quot; position.</string>
-               </property>
-               <property name="statusTip">
-                <string>Move robot to &quot;home&quot; position.</string>
-               </property>
-               <property name="whatsThis">
-                <string>Move robot to &quot;home&quot; position.</string>
-               </property>
-               <property name="text">
-                <string>Move Home</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
           </layout>
          </widget>
         </item>
@@ -218,29 +142,29 @@
           <property name="title">
            <string>Marker Status</string>
           </property>
-          <layout class="QVBoxLayout" name="verticalLayout_5">
-           <item>
-            <widget class="QLabel" name="label_6">
-             <property name="text">
-              <string>Position</string>
-             </property>
-            </widget>
-           </item>
-           <item>
+          <layout class="QGridLayout" name="gridLayout_3">
+           <item row="2" column="1">
             <widget class="QLineEdit" name="lineEdit_MP">
              <property name="readOnly">
               <bool>true</bool>
              </property>
             </widget>
            </item>
-           <item>
+           <item row="1" column="1">
+            <widget class="QLabel" name="label_6">
+             <property name="text">
+              <string>Position</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="1">
             <widget class="QLabel" name="label_7">
              <property name="text">
               <string>Orientation</string>
              </property>
             </widget>
            </item>
-           <item>
+           <item row="4" column="1">
             <widget class="QLineEdit" name="lineEdit_MO">
              <property name="readOnly">
               <bool>true</bool>
@@ -365,13 +289,13 @@
    </property>
    <property name="minimumSize">
     <size>
-     <width>380</width>
+     <width>385</width>
      <height>320</height>
     </size>
    </property>
    <property name="maximumSize">
     <size>
-     <width>380</width>
+     <width>385</width>
      <height>524287</height>
     </size>
    </property>
@@ -408,7 +332,7 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>346</width>
+          <width>351</width>
           <height>1200</height>
          </rect>
         </property>
@@ -424,7 +348,7 @@
            <x>0</x>
            <y>0</y>
            <width>350</width>
-           <height>1113</height>
+           <height>1209</height>
           </rect>
          </property>
          <property name="sizePolicy">
@@ -489,7 +413,7 @@
              <item>
               <widget class="QLineEdit" name="line_edit_master">
                <property name="text">
-                <string>http://192.168.1.2:11311/</string>
+                <string>http://eric-inspiron-7560:11311</string>
                </property>
               </widget>
              </item>
@@ -509,7 +433,7 @@
              <item>
               <widget class="QLineEdit" name="line_edit_host">
                <property name="text">
-                <string>192.168.1.67</string>
+                <string>127.0.0.1</string>
                </property>
               </widget>
              </item>
@@ -580,27 +504,8 @@
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_7">
              <item>
-              <layout class="QHBoxLayout" name="horizontalLayout_4">
-               <item>
-                <widget class="QLabel" name="label_9">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="minimumSize">
-                  <size>
-                   <width>78</width>
-                   <height>0</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string>Frequency/Hz</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
+              <layout class="QGridLayout" name="gridLayout_7">
+               <item row="2" column="1">
                 <widget class="QSpinBox" name="spinBox_Fre">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -631,20 +536,88 @@
                  </property>
                 </widget>
                </item>
-               <item>
-                <spacer name="horizontalSpacer_3">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
+               <item row="6" column="3">
+                <widget class="QPushButton" name="pushButton_F">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
                  </property>
-                 <property name="sizeHint" stdset="0">
+                 <property name="toolTip">
+                  <string>Finsih/Restart.</string>
+                 </property>
+                 <property name="statusTip">
+                  <string>Finsih/Restart.</string>
+                 </property>
+                 <property name="whatsThis">
+                  <string>Finsih/Restart.</string>
+                 </property>
+                 <property name="text">
+                  <string>Finish</string>
+                 </property>
+                 <property name="shortcut">
+                  <string>Ctrl+F</string>
+                 </property>
+                 <property name="checkable">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="6" column="1">
+                <widget class="QSpinBox" name="spinBox_CD">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
                   <size>
-                   <width>40</width>
-                   <height>20</height>
+                   <width>0</width>
+                   <height>0</height>
                   </size>
                  </property>
-                </spacer>
+                 <property name="toolTip">
+                  <string>Count down in seconds.</string>
+                 </property>
+                 <property name="statusTip">
+                  <string>Count down in seconds.</string>
+                 </property>
+                 <property name="whatsThis">
+                  <string>Count down in seconds.</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 </property>
+                 <property name="minimum">
+                  <number>1</number>
+                 </property>
+                 <property name="maximum">
+                  <number>99999</number>
+                 </property>
+                </widget>
                </item>
-               <item>
+               <item row="2" column="0">
+                <widget class="QLabel" name="label_9">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>78</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>Frequency/Hz:</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="2" colspan="2">
                 <widget class="QPushButton" name="pushButton_ST">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -678,99 +651,7 @@
                  </property>
                 </widget>
                </item>
-              </layout>
-             </item>
-             <item>
-              <layout class="QHBoxLayout" name="horizontalLayout_5">
-               <item>
-                <widget class="QCheckBox" name="checkBox_UT">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="minimumSize">
-                  <size>
-                   <width>79</width>
-                   <height>0</height>
-                  </size>
-                 </property>
-                 <property name="toolTip">
-                  <string>Use timer to stop the recording.</string>
-                 </property>
-                 <property name="statusTip">
-                  <string>Use timer to stop the recording.</string>
-                 </property>
-                 <property name="whatsThis">
-                  <string>Use timer to stop the recording.</string>
-                 </property>
-                 <property name="text">
-                  <string>Use timer</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QProgressBar" name="progressBar_T">
-                 <property name="enabled">
-                  <bool>true</bool>
-                 </property>
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>16777215</width>
-                   <height>15</height>
-                  </size>
-                 </property>
-                 <property name="value">
-                  <number>0</number>
-                 </property>
-                 <property name="textVisible">
-                  <bool>true</bool>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </item>
-             <item>
-              <layout class="QHBoxLayout" name="horizontalLayout_6">
-               <item>
-                <widget class="QSpinBox" name="spinBox_CD">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="minimumSize">
-                  <size>
-                   <width>0</width>
-                   <height>0</height>
-                  </size>
-                 </property>
-                 <property name="toolTip">
-                  <string>Count down in seconds.</string>
-                 </property>
-                 <property name="statusTip">
-                  <string>Count down in seconds.</string>
-                 </property>
-                 <property name="whatsThis">
-                  <string>Count down in seconds.</string>
-                 </property>
-                 <property name="alignment">
-                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                 </property>
-                 <property name="maximum">
-                  <number>99999</number>
-                 </property>
-                </widget>
-               </item>
-               <item>
+               <item row="6" column="2">
                 <widget class="QPushButton" name="pushButton_R">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -798,31 +679,193 @@
                  </property>
                 </widget>
                </item>
-               <item>
-                <widget class="QPushButton" name="pushButton_F">
+               <item row="6" column="0">
+                <widget class="QCheckBox" name="checkBox_UT">
                  <property name="sizePolicy">
-                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
                  </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>79</width>
+                   <height>0</height>
+                  </size>
+                 </property>
                  <property name="toolTip">
-                  <string>Finsih/Restart.</string>
+                  <string>Use timer to stop the recording.</string>
                  </property>
                  <property name="statusTip">
-                  <string>Finsih/Restart.</string>
+                  <string>Use timer to stop the recording.</string>
                  </property>
                  <property name="whatsThis">
-                  <string>Finsih/Restart.</string>
+                  <string>Use timer to stop the recording.</string>
                  </property>
                  <property name="text">
-                  <string>Finish</string>
+                  <string>Use timer</string>
                  </property>
-                 <property name="shortcut">
-                  <string>Ctrl+F</string>
+                </widget>
+               </item>
+               <item row="0" column="2" colspan="2">
+                <widget class="QLineEdit" name="lineEdit_markerframename">
+                 <property name="text">
+                  <string>/marker</string>
                  </property>
-                 <property name="checkable">
-                  <bool>true</bool>
+                </widget>
+               </item>
+               <item row="0" column="0" colspan="2">
+                <widget class="QLabel" name="label_11">
+                 <property name="text">
+                  <string>Marker Frame name:</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="2" colspan="2">
+                <widget class="QLineEdit" name="lineEdit_baseframename">
+                 <property name="text">
+                  <string>/base_link</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="0" colspan="2">
+                <widget class="QLabel" name="label_12">
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>Base Frame name:</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <widget class="QProgressBar" name="progressBar_T">
+               <property name="enabled">
+                <bool>true</bool>
+               </property>
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>15</height>
+                </size>
+               </property>
+               <property name="value">
+                <number>0</number>
+               </property>
+               <property name="textVisible">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QGroupBox" name="groupBox_basiccontrol">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="title">
+             <string>Basic Control</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_5">
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout">
+               <item>
+                <widget class="QPushButton" name="pushButtonMU">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>160</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="toolTip">
+                  <string>Move robot to &quot;up&quot; position.</string>
+                 </property>
+                 <property name="statusTip">
+                  <string>Move robot to &quot;up&quot; position.</string>
+                 </property>
+                 <property name="whatsThis">
+                  <string>Move robot to &quot;up&quot; position.</string>
+                 </property>
+                 <property name="text">
+                  <string>Move Up</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="pushButton_MH">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>161</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="toolTip">
+                  <string>Move robot to &quot;home&quot; position.</string>
+                 </property>
+                 <property name="statusTip">
+                  <string>Move robot to &quot;home&quot; position.</string>
+                 </property>
+                 <property name="whatsThis">
+                  <string>Move robot to &quot;home&quot; position.</string>
+                 </property>
+                 <property name="text">
+                  <string>Move Home</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="pushButton_MF">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>161</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="toolTip">
+                  <string>Move robot to &quot;forward&quot; position.</string>
+                 </property>
+                 <property name="statusTip">
+                  <string>Move robot to &quot;forward&quot; position.</string>
+                 </property>
+                 <property name="whatsThis">
+                  <string>Move robot to &quot;forward&quot; position.</string>
+                 </property>
+                 <property name="text">
+                  <string>Move Forward</string>
                  </property>
                 </widget>
                </item>
@@ -859,8 +902,30 @@
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_8">
              <item>
-              <layout class="QHBoxLayout" name="horizontalLayout">
-               <item>
+              <layout class="QGridLayout" name="gridLayout_8">
+               <item row="2" column="0">
+                <widget class="QLabel" name="label_10">
+                 <property name="minimumSize">
+                  <size>
+                   <width>30</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>80</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>Rate:</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="0">
                 <widget class="QCheckBox" name="checkBox_Threshod">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
@@ -888,77 +953,7 @@
                  </property>
                 </widget>
                </item>
-               <item>
-                <widget class="QSpinBox" name="spinBox_Rate">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="minimumSize">
-                  <size>
-                   <width>60</width>
-                   <height>0</height>
-                  </size>
-                 </property>
-                 <property name="toolTip">
-                  <string>Minimum completed rate.</string>
-                 </property>
-                 <property name="statusTip">
-                  <string>Minimum completed rate.</string>
-                 </property>
-                 <property name="whatsThis">
-                  <string>Minimum completed rate.</string>
-                 </property>
-                 <property name="alignment">
-                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                 </property>
-                 <property name="maximum">
-                  <number>100</number>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <spacer name="horizontalSpacer_4">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>40</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-              </layout>
-             </item>
-             <item>
-              <layout class="QHBoxLayout" name="horizontalLayout_3">
-               <item>
-                <widget class="QLabel" name="label_10">
-                 <property name="minimumSize">
-                  <size>
-                   <width>30</width>
-                   <height>0</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>80</width>
-                   <height>16777215</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string>Rate:</string>
-                 </property>
-                 <property name="alignment">
-                  <set>Qt::AlignCenter</set>
-                 </property>
-                </widget>
-               </item>
-               <item>
+               <item row="2" column="1" colspan="2">
                 <widget class="QProgressBar" name="progressBar_R">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -989,48 +984,7 @@
                  </property>
                 </widget>
                </item>
-              </layout>
-             </item>
-             <item>
-              <layout class="QHBoxLayout" name="horizontalLayout_2">
-               <item>
-                <widget class="QPushButton" name="pushButton_P">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="minimumSize">
-                  <size>
-                   <width>40</width>
-                   <height>0</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>100</width>
-                   <height>16777215</height>
-                  </size>
-                 </property>
-                 <property name="toolTip">
-                  <string>Plan.</string>
-                 </property>
-                 <property name="statusTip">
-                  <string>Plan.</string>
-                 </property>
-                 <property name="whatsThis">
-                  <string>Plan.</string>
-                 </property>
-                 <property name="text">
-                  <string>Plan</string>
-                 </property>
-                 <property name="shortcut">
-                  <string>Ctrl+P</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
+               <item row="4" column="2">
                 <widget class="QPushButton" name="pushButton_E">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -1040,7 +994,7 @@
                  </property>
                  <property name="minimumSize">
                   <size>
-                   <width>40</width>
+                   <width>0</width>
                    <height>0</height>
                   </size>
                  </property>
@@ -1067,7 +1021,75 @@
                  </property>
                 </widget>
                </item>
-               <item>
+               <item row="4" column="1">
+                <widget class="QPushButton" name="pushButton_P">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>100</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="toolTip">
+                  <string>Plan.</string>
+                 </property>
+                 <property name="statusTip">
+                  <string>Plan.</string>
+                 </property>
+                 <property name="whatsThis">
+                  <string>Plan.</string>
+                 </property>
+                 <property name="text">
+                  <string>Plan</string>
+                 </property>
+                 <property name="shortcut">
+                  <string>Ctrl+P</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="1">
+                <widget class="QSpinBox" name="spinBox_Rate">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>60</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="toolTip">
+                  <string>Minimum completed rate.</string>
+                 </property>
+                 <property name="statusTip">
+                  <string>Minimum completed rate.</string>
+                 </property>
+                 <property name="whatsThis">
+                  <string>Minimum completed rate.</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 </property>
+                 <property name="maximum">
+                  <number>100</number>
+                 </property>
+                </widget>
+               </item>
+               <item row="4" column="0">
                 <widget class="QPushButton" name="pushButton_PE">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
@@ -1077,7 +1099,7 @@
                  </property>
                  <property name="minimumSize">
                   <size>
-                   <width>120</width>
+                   <width>0</width>
                    <height>0</height>
                   </size>
                  </property>
@@ -1088,7 +1110,7 @@
                   </size>
                  </property>
                  <property name="text">
-                  <string>Plan and Execute</string>
+                  <string>Plan&amp;&amp;Execute</string>
                  </property>
                 </widget>
                </item>
@@ -1207,7 +1229,7 @@
                 <widget class="QLineEdit" name="lineEdit_objpath"/>
                </item>
                <item row="1" column="2">
-                <widget class="QPushButton" name="pushButton_newobject">
+                <widget class="QPushButton" name="pushButton_LO">
                  <property name="toolTip">
                   <string>Add new objects.</string>
                  </property>
@@ -1218,12 +1240,12 @@
                   <string>Add new objects.</string>
                  </property>
                  <property name="text">
-                  <string>New Object</string>
+                  <string>Load object</string>
                  </property>
                 </widget>
                </item>
                <item row="0" column="2">
-                <widget class="QPushButton" name="pushButton_LO">
+                <widget class="QPushButton" name="pushButton_advanced">
                  <property name="maximumSize">
                   <size>
                    <width>16777215</width>
@@ -1231,7 +1253,7 @@
                   </size>
                  </property>
                  <property name="text">
-                  <string>Load File</string>
+                  <string>Advanced</string>
                  </property>
                 </widget>
                </item>

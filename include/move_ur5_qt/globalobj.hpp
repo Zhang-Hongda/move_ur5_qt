@@ -2,6 +2,9 @@
 #define GLOBALOBJ_H
 #include "logger.hpp"
 #include "stringbuffer.hpp"
-extern Logger logger;
+#include "tf_listener.hpp"
 
+extern Logger logger;
+class Tf_listener;
+extern Tf_listener listener;
 #endif  // GLOBALOBJ_H

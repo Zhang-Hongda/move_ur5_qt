@@ -1,4 +1,2 @@
-#target frame name: /marker or /tool
-target_frame: "/tool"
 #EndEffectorLink: tool0 or pen
 EndEffectorLink: "pen"

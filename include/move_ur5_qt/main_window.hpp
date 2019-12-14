@@ -74,7 +74,6 @@ class MainWindow : public QMainWindow {
   void on_quit_button_clicked();
   void on_pushButtonMU_clicked();
   void on_pushButton_MH_clicked();
-  void on_pushButton_CO_clicked();
   void on_pushButton_R_toggled(bool checked);
   void on_checkBox_UT_toggled(bool checked);
   void on_pushButton_F_toggled(bool checked);
@@ -107,10 +106,15 @@ class MainWindow : public QMainWindow {
 
   void on_pushButton_clearlog_clicked();
 
+  void on_lineEdit_markerframename_editingFinished();
+
+  void on_lineEdit_baseframename_editingFinished();
+
  private:
+  int init_argc;
+  char **init_argv;
   Ui::MainWindowDesign ui;
   QNode qnode;
-  Tf_listener listener;
   Timer timer;
   std::vector<geometry_msgs::Pose> waypoints;
   trajectoryXMLWriter writer;
