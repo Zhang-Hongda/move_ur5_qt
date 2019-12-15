@@ -1,7 +1,6 @@
 #include "../include/move_ur5_qt/collision_objects_mannager.hpp"
 #include <algorithm>
 
-namespace move_ur5_qt {
 // function that return a co
 moveit_msgs::CollisionObject create_primitive_collision_object(
     string frame_id, string obj_id, primitive_shape_set obj_shape,
@@ -122,36 +121,8 @@ bool open_file(std::fstream &obj_file, string dir) {
   return true;
 }
 
-// convert [12,23,323]
-template <typename T>
-bool string2vector(string str, vector<T> &vec) {
-  if (str.empty()) return false;
-  string sub_str(str, 1, str.size() - 1);  // 12,23,323
-
-  vector<string> n_list;
-  string::iterator it = sub_str.begin();
-  string n = "";
-  for (; it != sub_str.end(); it++) {
-    if (*it == ',' || it == sub_str.end() - 1) {
-      n_list.push_back(n);
-      n = "";
-      continue;
-    }
-    n += *it;
-  }
-  for (string s : n_list) {
-    T num;
-    std::stringstream ss;
-    ss << s;
-    ss >> num;  // convert to number
-    vec.push_back(num);
-  }
-  return true;
-}
-
 // class function
-Collision_Objects_Mannager::Collision_Objects_Mannager(int argc, char **argv)
-    : init_argc(argc), init_argv(argv) {}
+Collision_Objects_Mannager::Collision_Objects_Mannager() {}
 
 Collision_Objects_Mannager::~Collision_Objects_Mannager() {}
 
@@ -162,6 +133,20 @@ void Collision_Objects_Mannager::init() {
   ros::Duration(1.0).sleep();  // wait for init
   planning_scene_diff_publisher =
       nh_ptr->advertise<moveit_msgs::PlanningScene>("planning_scene", 1);
+}
+
+// valid format
+bool Collision_Objects_Mannager::isvalid(collision_object obj) {
+  bool valid = false;
+  if (!obj.name.empty() && !obj.frame.empty()) {
+    if (obj.shape == BOX) valid = (obj.dimensions.size() == 3);
+    if (obj.shape == SPHERE) valid = (obj.dimensions.size() == 1);
+    if (obj.shape == CONE) valid = (obj.dimensions.size() == 2);
+    if (obj.shape == CYLINDER) valid = (obj.dimensions.size() == 2);
+    valid = (valid && (obj.color.size() == 3 || obj.color.size() == 4) &&
+             (obj.pose.size() == 7 || obj.pose.size() == 6));
+  }
+  return valid;
 }
 
 vector<string> Collision_Objects_Mannager::get_objects_names() {
@@ -188,6 +173,18 @@ void Collision_Objects_Mannager::remove_all_objects() {
   planning_scene_interface_ptr->removeCollisionObjects(objects_id_set);
 }
 
+// change pose
+void Collision_Objects_Mannager::modify_object_pose(string name,
+                                                    vector<double> pose) {
+  collision_object_set[name].pose.clear();
+  collision_object_set[name].pose = pose;
+}
+
+// get obj
+collision_object *Collision_Objects_Mannager::get_named_object(string name) {
+  return &(collision_object_set[name]);
+}
+
 // update objects
 void Collision_Objects_Mannager::update() {
   using std::pair;
@@ -209,17 +206,22 @@ void Collision_Objects_Mannager::update() {
   planning_scene_interface_ptr->addCollisionObjects(objects_set);
   planning_scene.is_diff = true;
   planning_scene_diff_publisher.publish(planning_scene);
-  ros::Duration(0.5).sleep();
+  ros::Duration(0.2).sleep();
   Q_EMIT Collision_Objects_Updated();
 }
 
 // add single obj
-void Collision_Objects_Mannager::add_collision_object(collision_object obj) {
+void Collision_Objects_Mannager::add_collision_object(collision_object obj,
+                                                      bool log) {
   using std::pair;
+  if (!isvalid(obj)) {
+    logger.log(Error, "Invalid object: " + obj.name);
+    return;
+  }
   // edit golbal set
   collision_object_set[obj.name] = obj;
-  //  logger.log(Info, StringBuffer::Format("Add %s to %s", obj.name.c_str(),
-  //                                        obj.frame.c_str()));
+  if (log)
+    logger.log(Info, "Add %s to %s", obj.name.c_str(), obj.frame.c_str());
   update();
 }
 
@@ -233,19 +235,13 @@ bool Collision_Objects_Mannager::load_collision_objects_form_file(string dir) {
   using std::cout;
   using std::fstream;
   using std::ios;
-  map<string, primitive_shape_set> shape_map;
-  shape_map["BOX"] = BOX;
-  shape_map["SPHERE"] = SPHERE;
-  shape_map["CYLINDER"] = CYLINDER;
-  shape_map["CONE"] = CONE;
-
   fstream obj_file;
   if (!open_file(obj_file, dir)) return false;
   map<string, string> obj_arg;
   while (!obj_file.eof()) {
     string line;
     obj_file >> line;
-    int p = line.find(':');
+    unsigned long p = line.find(':');
     if (p != string::npos) {
       string key(line, 0, p);
       string value(line, p + 1, line.size());
@@ -258,7 +254,7 @@ bool Collision_Objects_Mannager::load_collision_objects_form_file(string dir) {
   if (obj_arg.size() != 6 || !string2vector(obj_arg["dimensions"], dim_v) ||
       !string2vector(obj_arg["color"], col_v) ||
       !string2vector(obj_arg["pose"], pos_v)) {
-    //    logger.log(Error, "format error in collision object file.");
+    logger.log(Error, "Format error in file: %s " + dir);
     return false;
   }
   collision_object obj;
@@ -268,6 +264,10 @@ bool Collision_Objects_Mannager::load_collision_objects_form_file(string dir) {
   obj.dimensions = dim_v;
   obj.color = col_v;
   obj.pose = pos_v;
+  if (!isvalid(obj)) {
+    logger.log(Error, "Invalid object: " + obj.name);
+    return false;
+  }
   collision_object_set[obj.name] = obj;
   logger.log(Info, "object loaded: %s", dir.c_str());
   return true;
@@ -287,4 +287,32 @@ void Collision_Objects_Mannager::load_collision_objects_form_dir(
   }
 }
 
-}  // namespace move_ur5_qt
+// get obj info
+string Collision_Objects_Mannager::get_object_info(collision_object obj) {
+  string info;
+  std::stringstream ss;
+  ss << "frame:" << obj.frame << "\nname:" << obj.name << "\nshape:";
+  if (obj.shape == BOX) ss << "BOX";
+  if (obj.shape == SPHERE) ss << "SHPERE";
+  if (obj.shape == CONE) ss << "SHPERE";
+  if (obj.shape == CYLINDER) ss << "CYLINDER";
+  ss << "\ncolor:[";
+  for (float n : obj.color) ss << n << ",";
+  info += ss.str();
+  info.pop_back();
+  info += ']';
+  ss.str("");
+  ss << "\ndimensions:[";
+  for (double n : obj.dimensions) ss << n << ",";
+  info += ss.str();
+  info.pop_back();
+  info += ']';
+  ss.str("");
+  ss << "\npose:[";
+  for (double n : obj.pose) ss << n << ",";
+  info += ss.str();
+  info.pop_back();
+  info += ']';
+  ss.str("");
+  return info;
+}

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>941</width>
-    <height>486</height>
+    <height>561</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -331,15 +331,15 @@
         <property name="geometry">
          <rect>
           <x>0</x>
-          <y>0</y>
+          <y>-379</y>
           <width>351</width>
-          <height>1200</height>
+          <height>1500</height>
          </rect>
         </property>
         <property name="minimumSize">
          <size>
           <width>300</width>
-          <height>1200</height>
+          <height>1500</height>
          </size>
         </property>
         <widget class="QFrame" name="frame">
@@ -348,7 +348,7 @@
            <x>0</x>
            <y>0</y>
            <width>350</width>
-           <height>1209</height>
+           <height>1262</height>
           </rect>
          </property>
          <property name="sizePolicy">
@@ -480,6 +480,12 @@
                <property name="text">
                 <string>Connect</string>
                </property>
+               <property name="autoDefault">
+                <bool>true</bool>
+               </property>
+               <property name="default">
+                <bool>false</bool>
+               </property>
               </widget>
              </item>
             </layout>
@@ -500,7 +506,7 @@
              </size>
             </property>
             <property name="title">
-             <string>RPD Control Panel</string>
+             <string>Trajectory Based RPD</string>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_7">
              <item>
@@ -512,6 +518,9 @@
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
+                 </property>
+                 <property name="focusPolicy">
+                  <enum>Qt::ClickFocus</enum>
                  </property>
                  <property name="toolTip">
                   <string>Set frequency.</string>
@@ -577,6 +586,9 @@
                    <width>0</width>
                    <height>0</height>
                   </size>
+                 </property>
+                 <property name="focusPolicy">
+                  <enum>Qt::ClickFocus</enum>
                  </property>
                  <property name="toolTip">
                   <string>Count down in seconds.</string>
@@ -875,6 +887,36 @@
            </widget>
           </item>
           <item>
+           <widget class="QGroupBox" name="groupBox_taskbasedrpd">
+            <property name="title">
+             <string>Task Based RPD</string>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_10">
+             <item row="0" column="0">
+              <widget class="QComboBox" name="comboBox_task">
+               <item>
+                <property name="text">
+                 <string/>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Pick And Place</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QPushButton" name="pushButton_startprogramming">
+               <property name="text">
+                <string>Start Programming</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
            <widget class="QGroupBox" name="groupBox_PE">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -1071,6 +1113,9 @@
                    <width>60</width>
                    <height>0</height>
                   </size>
+                 </property>
+                 <property name="focusPolicy">
+                  <enum>Qt::ClickFocus</enum>
                  </property>
                  <property name="toolTip">
                   <string>Minimum completed rate.</string>

@@ -11,11 +11,6 @@
 #include "../include/move_ur5_qt/qnode.hpp"
 
 /*****************************************************************************
-** Namespaces
-*****************************************************************************/
-
-namespace move_ur5_qt {
-/*****************************************************************************
 ** Implementation
 *****************************************************************************/
 
@@ -217,4 +212,4 @@ void QNode::executeTrajectory(std::vector<geometry_msgs::Pose> waypoints) {
   Q_EMIT executionFinished();
 }
 
-}  // namespace move_ur5_qt
+

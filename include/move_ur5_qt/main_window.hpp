@@ -8,12 +8,10 @@
 #include <QtGui/QMainWindow>
 #include "ui_main_window.h"
 #include "qnode.hpp"
-#include "tf_listener.hpp"
 #include "timer.hpp"
 #include "gesture_handler.hpp"
 #include "trajectoryxmlwriter.hpp"
 #include "trajectoryxmlreader.hpp"
-#include "collision_objects_mannager.hpp"
 #include "globaldata.hpp"
 #include "globalobj.hpp"
 /*****************************************************************************
@@ -110,17 +108,18 @@ class MainWindow : public QMainWindow {
 
   void on_lineEdit_baseframename_editingFinished();
 
+  void on_pushButton_advanced_clicked();
+
  private:
   int init_argc;
   char **init_argv;
   Ui::MainWindowDesign ui;
-  QNode qnode;
   Timer timer;
   std::vector<geometry_msgs::Pose> waypoints;
   trajectoryXMLWriter writer;
   trajectoryXMLReader reader;
   Gesture_handler gesture_handler;
-  Collision_Objects_Mannager collision_objects_mannager;
+  std::shared_ptr<COMannagerDialog> co_mannager_dialog_ptr;
 };
 
 }  // namespace move_ur5_qt

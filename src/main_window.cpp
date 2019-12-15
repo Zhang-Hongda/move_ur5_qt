@@ -5,12 +5,6 @@
 #include <QDebug>
 #include <QString>
 #include "../include/move_ur5_qt/main_window.hpp"
-#include "../include/move_ur5_qt/qnode.hpp"
-#include "../include/move_ur5_qt/tf_listener.hpp"
-#include "../include/move_ur5_qt/timer.hpp"
-#include "../include/move_ur5_qt/gesture_handler.hpp"
-#include "../include/move_ur5_qt/trajectoryxmlwriter.hpp"
-#include "../include/move_ur5_qt/trajectoryxmlreader.hpp"
 
 /*****************************************************************************
 ** Namespaces
@@ -59,12 +53,13 @@ MainWindow::MainWindow(int argc, char **argv, QWidget *parent)
     : QMainWindow(parent),
       init_argc(argc),
       init_argv(argv),
-      qnode(),
       timer(),
       writer(),
       reader(),
-      gesture_handler(),
-      collision_objects_mannager(argc, argv) {
+      gesture_handler() {
+  // co_mannager_dialog
+  co_mannager_dialog_ptr = std::make_shared<COMannagerDialog>(this);
+
   ui.setupUi(this);   // Calling this incidentally connects all ui's triggers to
                       // on_...() callbacks in this class.
   ros::Time::init();  // Initialize ros time first or it may crash
@@ -331,11 +326,15 @@ void move_ur5_qt::MainWindow::on_pushButton_ST_toggled(bool checked) {
     ui.tab_manager->setCurrentIndex(1);  // show second tab.
     listener.startTracking();
     ui.pushButton_F->setEnabled(true);
+    ui.lineEdit_markerframename->setEnabled(false);
+    ui.lineEdit_baseframename->setEnabled(false);
     ui.pushButton_ST->setText("Stop Tracking");
   } else {
     listener.stopTracking();
     ui.pushButton_ST->setText("Start Tracking");
     ui.pushButton_F->setEnabled(false);
+    ui.lineEdit_markerframename->setEnabled(true);
+    ui.lineEdit_baseframename->setEnabled(true);
     updatelineEdit_MP("");
     updatelineEdit_MO("");
   }
@@ -387,6 +386,7 @@ void move_ur5_qt::MainWindow::disableAllwidgets() {
   ui.groupBox_SL->setEnabled(false);
   ui.groupBox_hgr->setEnabled(false);
   ui.groupBox_basiccontrol->setEnabled(false);
+  ui.groupBox_taskbasedrpd->setEnabled(false);
 }
 
 void move_ur5_qt::MainWindow::enableAllwidgets() {
@@ -397,9 +397,11 @@ void move_ur5_qt::MainWindow::enableAllwidgets() {
   ui.groupBox_Markerstatus->setEnabled(true);
   ui.quit_button->setEnabled(true);
   ui.groupBox_SL->setEnabled(true);
-  ui.pushButton_F->setEnabled(false);
   ui.groupBox_hgr->setEnabled(true);
   ui.groupBox_basiccontrol->setEnabled(true);
+  ui.groupBox_taskbasedrpd->setEnabled(true);
+
+  ui.pushButton_F->setEnabled(false);
   ui.button_connect->setEnabled(false);
 }
 
@@ -713,4 +715,8 @@ void move_ur5_qt::MainWindow::on_lineEdit_markerframename_editingFinished() {
 
 void move_ur5_qt::MainWindow::on_lineEdit_baseframename_editingFinished() {
   listener.setbaseframe(ui.lineEdit_baseframename->text().toStdString());
+}
+
+void move_ur5_qt::MainWindow::on_pushButton_advanced_clicked() {
+  co_mannager_dialog_ptr->show();
 }

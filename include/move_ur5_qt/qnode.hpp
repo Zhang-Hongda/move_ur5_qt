@@ -26,11 +26,6 @@
 #include <QStringListModel>
 #include "globalobj.hpp"
 Q_DECLARE_METATYPE(std::string)
-/*****************************************************************************
-** Namespaces
-*****************************************************************************/
-
-namespace move_ur5_qt {
 
 /*****************************************************************************
 ** Class
@@ -71,7 +66,5 @@ Q_SIGNALS:
   ros::Publisher marker_pub;
   std::shared_ptr<ros::NodeHandle> node_handle;
 };
-
-}  // namespace move_ur5_qt
 
 #endif /* move_ur5_qt_QNODE_HPP_ */
