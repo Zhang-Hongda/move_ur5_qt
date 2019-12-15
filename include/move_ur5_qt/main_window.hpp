@@ -14,6 +14,7 @@
 #include "trajectoryxmlreader.hpp"
 #include "globaldata.hpp"
 #include "globalobj.hpp"
+#include "pickandplacedialog.hpp"
 /*****************************************************************************
 ** Namespace
 *****************************************************************************/
@@ -110,16 +111,18 @@ class MainWindow : public QMainWindow {
 
   void on_pushButton_advanced_clicked();
 
+  void on_pushButton_startprogramming_clicked();
+
  private:
   int init_argc;
   char **init_argv;
   Ui::MainWindowDesign ui;
   Timer timer;
-  std::vector<geometry_msgs::Pose> waypoints;
   trajectoryXMLWriter writer;
   trajectoryXMLReader reader;
   Gesture_handler gesture_handler;
   std::shared_ptr<COMannagerDialog> co_mannager_dialog_ptr;
+  std::shared_ptr<PickAndPlaceDialog> pick_and_place_dialog_ptr;
 };
 
 }  // namespace move_ur5_qt

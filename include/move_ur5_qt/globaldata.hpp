@@ -1,5 +1,10 @@
 #ifndef GLOBALDATA_H
 #define GLOBALDATA_H
+
+#ifndef Q_MOC_RUN
+#include <ros/ros.h>
+#include <tf/transform_listener.h>
+#endif
 #include <QStringListModel>
 #include <vector>
 #include <string>
@@ -38,5 +43,7 @@ struct collision_object {
     pose = _pose;
   }
 };
+
+extern std::vector<geometry_msgs::Pose> waypoints;
 
 #endif  // GLOBALDATA_H

@@ -1,6 +1,5 @@
 #include "../include/move_ur5_qt/comannagerdialog.hpp"
 #include <QSettings>
-#include <QStringList>
 
 COMannagerDialog::COMannagerDialog(QWidget *parent)
     : QDialog(parent), ui(new Ui::COMannagerDialog) {

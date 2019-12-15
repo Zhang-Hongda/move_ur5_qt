@@ -2,7 +2,6 @@
 #define COMANNAGERDIALOG_HPP
 
 #include <QDialog>
-#include <QMutex>
 #include "ui_comannagerdialog.h"
 #include "objectrelocator.hpp"
 #include "objectdrawer.hpp"

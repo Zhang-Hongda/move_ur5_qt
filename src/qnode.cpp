@@ -163,9 +163,9 @@ void QNode::planTrajectory(std::vector<geometry_msgs::Pose> waypoints) {
   double rate = move_group->computeCartesianPath(waypoints, eef_step,
                                                  jump_threshold, trajectory);
   plan.trajectory_ = trajectory;
-  Q_EMIT planningFinished(rate * 100);
+  Q_EMIT planningFinished(rate * 100.0);
   logger.log(Info, "Planning Finished.");
-  logger.log(Info, "Completed: %d%%", rate * 100);
+  logger.log(Info, "Completed: %.2f%%", rate * 100.0);
 }
 
 // Execute the plan
@@ -211,5 +211,3 @@ void QNode::executeTrajectory(std::vector<geometry_msgs::Pose> waypoints) {
   }
   Q_EMIT executionFinished();
 }
-
-

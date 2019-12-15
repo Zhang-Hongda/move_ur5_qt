@@ -59,6 +59,7 @@ MainWindow::MainWindow(int argc, char **argv, QWidget *parent)
       gesture_handler() {
   // co_mannager_dialog
   co_mannager_dialog_ptr = std::make_shared<COMannagerDialog>(this);
+  pick_and_place_dialog_ptr = std::make_shared<PickAndPlaceDialog>(this);
 
   ui.setupUi(this);   // Calling this incidentally connects all ui's triggers to
                       // on_...() callbacks in this class.
@@ -719,4 +720,9 @@ void move_ur5_qt::MainWindow::on_lineEdit_baseframename_editingFinished() {
 
 void move_ur5_qt::MainWindow::on_pushButton_advanced_clicked() {
   co_mannager_dialog_ptr->show();
+}
+
+void move_ur5_qt::MainWindow::on_pushButton_startprogramming_clicked() {
+  if (ui.comboBox_task->currentText() == "Pick And Place")
+    pick_and_place_dialog_ptr->show();
 }
