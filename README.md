@@ -144,3 +144,11 @@ roslaunch move_ur5_qt T-RPD.launch
 [![gesture+T-RPD](https://img.youtube.com/vi/zrDPwKBzDR4/0.jpg)](https://www.youtube.com/watch?v=zrDPwKBzDR4)  
 - Programming a 3D trajectory with the system.  
 [![gesture+T-RPD+3d curves](https://img.youtube.com/vi/I-mkXT_k8kA/0.jpg)](https://www.youtube.com/watch?v=I-mkXT_k8kA)  
+### New features
+- GUI updated.
+- Add advanced scene object editing interface. Now, you can move/draw simple collision objects with the pen-shape marker.
+- Add task-based RPD function, but it's still under developing. Right now, only simple task, such as Pick-and-Place, is supported.
+
+#### Video
+- New function demonstration.  
+[![demo_2timesspeeded](https://img.youtube.com/vi/maANrNGWW3w/0.jpg)](https://www.youtube.com/watch?v=maANrNGWW3w)  
