@@ -141,7 +141,10 @@ bool Collision_Objects_Mannager::isvalid(collision_object obj) {
   if (!obj.name.empty() && !obj.frame.empty()) {
     if (obj.shape == BOX) valid = (obj.dimensions.size() == 3);
     if (obj.shape == SPHERE) valid = (obj.dimensions.size() == 1);
-    if (obj.shape == CONE) valid = (obj.dimensions.size() == 2);
+    if (obj.shape == CONE) {
+      valid = (obj.dimensions.size() == 2 && obj.dimensions[0] > 0 &&
+               obj.dimensions[1] > 0);
+    }
     if (obj.shape == CYLINDER) valid = (obj.dimensions.size() == 2);
     valid = (valid && (obj.color.size() == 3 || obj.color.size() == 4) &&
              (obj.pose.size() == 7 || obj.pose.size() == 6));

@@ -100,6 +100,7 @@ void COMannagerDialog::set_create_object_lineEdit_readOnly(bool flag) {
 void COMannagerDialog::on_pushButton_markerpose_toggled(bool checked) {
   ui->pushButton_draw->setChecked(false);
   if (checked) {
+    ui->pushButton_quit->setEnabled(false);
     logger.log(Info, "Moving object with marker: START.");
     set_create_object_lineEdit_readOnly(true);
     ui->pushButton_draw->setEnabled(false);
@@ -108,6 +109,7 @@ void COMannagerDialog::on_pushButton_markerpose_toggled(bool checked) {
     } else
       logger.log(Error, "Object format error: " + temp_co.name);
   } else {
+    ui->pushButton_quit->setEnabled(true);
     obj_relocator.stop();
     set_create_object_lineEdit_readOnly(false);
     ui->pushButton_draw->setEnabled(true);
@@ -118,14 +120,17 @@ void COMannagerDialog::on_pushButton_markerpose_toggled(bool checked) {
 void COMannagerDialog::on_pushButton_draw_toggled(bool checked) {
   ui->pushButton_markerpose->setChecked(false);
   if (checked) {
+    ui->pushButton_quit->setEnabled(false);
     logger.log(Info, "Drawing object with marker: START.");
     set_create_object_lineEdit_readOnly(true);
     ui->pushButton_markerpose->setEnabled(false);
-    if (collision_objects_mannager.isvalid(temp_co)) {
-      obj_drawer.draw_object(&temp_co);
-    } else
-      logger.log(Error, "Object format error: " + temp_co.name);
+    obj_drawer.draw_object(&temp_co);
+    //    if (collision_objects_mannager.isvalid(temp_co)) {
+    //      obj_drawer.draw_object(&temp_co);
+    //    } else
+    //      logger.log(Error, "Object format error: " + temp_co.name);
   } else {
+    ui->pushButton_quit->setEnabled(true);
     obj_drawer.stop();
     set_create_object_lineEdit_readOnly(false);
     ui->pushButton_markerpose->setEnabled(true);
@@ -176,6 +181,7 @@ void COMannagerDialog::on_lineEdit_pose2_editingFinished() {
 
 void COMannagerDialog::on_pushButton_markerPose2_toggled(bool checked) {
   if (checked) {
+    ui->pushButton_quit->setEnabled(false);
     string selected_obj = ui->comboBox_name->currentText().toStdString();
     collision_object *obj =
         collision_objects_mannager.get_named_object(selected_obj);
@@ -188,6 +194,7 @@ void COMannagerDialog::on_pushButton_markerPose2_toggled(bool checked) {
     } else
       logger.log(Error, "Object format error: " + obj->name);
   } else {
+    ui->pushButton_quit->setEnabled(true);
     obj_relocator.stop();
     ui->lineEdit_pose2->setReadOnly(false);
     ui->comboBox_name->setEditable(true);

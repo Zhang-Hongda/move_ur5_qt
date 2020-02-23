@@ -15,10 +15,10 @@ void ObjectRelocator::run() {
     x = pose.position.x;
     y = pose.position.y;
     z = pose.position.z;
-    qx = pose.orientation.w;
-    qy = pose.orientation.x;
-    qz = pose.orientation.y;
-    qw = pose.orientation.z;
+    qx = pose.orientation.x;
+    qy = pose.orientation.y;
+    qz = pose.orientation.z;
+    qw = pose.orientation.w;
     obj->pose = {x, y, z, qx, qy, qz, qw};
     Q_EMIT
     positionUpdated(obj->pose);

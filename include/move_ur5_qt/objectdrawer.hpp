@@ -16,6 +16,9 @@ class ObjectDrawer : public QThread {
   void run();
   void draw_object(collision_object* obj);
   void draw_box(geometry_msgs::Pose stratPose);
+  void draw_sphere(geometry_msgs::Pose stratPose);
+  void draw_cone(geometry_msgs::Pose stratPose);
+  void draw_cylinder(geometry_msgs::Pose stratPose);
   void stop();
 Q_SIGNALS:
   void dimensions_updated(std::vector<double>);

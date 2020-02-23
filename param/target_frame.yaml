@@ -1,2 +1,2 @@
-#EndEffectorLink: tool0 or pen
-EndEffectorLink: "pen"
+#EndEffectorLink: tool0 or pen or grapper
+EndEffectorLink: "grapper"

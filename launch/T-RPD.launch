@@ -4,5 +4,5 @@
 		<arg name="topic" value="/kinect2/qhd/points"/>
 	</include>
 	<include file="$(find move_ur5_qt)/launch/move_ur5_qt.launch"/>
-	<include file="$(find cnn_hgr)/launch/HGR.launch"/>
+	<!--include file="$(find cnn_hgr)/launch/HGR.launch"/-->
 </launch>

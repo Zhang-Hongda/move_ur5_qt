@@ -331,7 +331,7 @@
         <property name="geometry">
          <rect>
           <x>0</x>
-          <y>-306</y>
+          <y>0</y>
           <width>351</width>
           <height>1500</height>
          </rect>
@@ -487,6 +487,109 @@
                 <bool>false</bool>
                </property>
               </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QGroupBox" name="groupBox_basiccontrol">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="title">
+             <string>Basic Control</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_5">
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout">
+               <item>
+                <widget class="QPushButton" name="pushButtonMU">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>160</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="toolTip">
+                  <string>Move robot to &quot;up&quot; position.</string>
+                 </property>
+                 <property name="statusTip">
+                  <string>Move robot to &quot;up&quot; position.</string>
+                 </property>
+                 <property name="whatsThis">
+                  <string>Move robot to &quot;up&quot; position.</string>
+                 </property>
+                 <property name="text">
+                  <string>Move Up</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="pushButton_MH">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>161</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="toolTip">
+                  <string>Move robot to &quot;home&quot; position.</string>
+                 </property>
+                 <property name="statusTip">
+                  <string>Move robot to &quot;home&quot; position.</string>
+                 </property>
+                 <property name="whatsThis">
+                  <string>Move robot to &quot;home&quot; position.</string>
+                 </property>
+                 <property name="text">
+                  <string>Move Home</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="pushButton_MF">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>161</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="toolTip">
+                  <string>Move robot to &quot;forward&quot; position.</string>
+                 </property>
+                 <property name="statusTip">
+                  <string>Move robot to &quot;forward&quot; position.</string>
+                 </property>
+                 <property name="whatsThis">
+                  <string>Move robot to &quot;forward&quot; position.</string>
+                 </property>
+                 <property name="text">
+                  <string>Move Forward</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
              </item>
             </layout>
            </widget>
@@ -779,109 +882,6 @@
                 <bool>true</bool>
                </property>
               </widget>
-             </item>
-            </layout>
-           </widget>
-          </item>
-          <item>
-           <widget class="QGroupBox" name="groupBox_basiccontrol">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="title">
-             <string>Basic Control</string>
-            </property>
-            <layout class="QVBoxLayout" name="verticalLayout_5">
-             <item>
-              <layout class="QHBoxLayout" name="horizontalLayout">
-               <item>
-                <widget class="QPushButton" name="pushButtonMU">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>160</width>
-                   <height>16777215</height>
-                  </size>
-                 </property>
-                 <property name="toolTip">
-                  <string>Move robot to &quot;up&quot; position.</string>
-                 </property>
-                 <property name="statusTip">
-                  <string>Move robot to &quot;up&quot; position.</string>
-                 </property>
-                 <property name="whatsThis">
-                  <string>Move robot to &quot;up&quot; position.</string>
-                 </property>
-                 <property name="text">
-                  <string>Move Up</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QPushButton" name="pushButton_MH">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>161</width>
-                   <height>16777215</height>
-                  </size>
-                 </property>
-                 <property name="toolTip">
-                  <string>Move robot to &quot;home&quot; position.</string>
-                 </property>
-                 <property name="statusTip">
-                  <string>Move robot to &quot;home&quot; position.</string>
-                 </property>
-                 <property name="whatsThis">
-                  <string>Move robot to &quot;home&quot; position.</string>
-                 </property>
-                 <property name="text">
-                  <string>Move Home</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QPushButton" name="pushButton_MF">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>161</width>
-                   <height>16777215</height>
-                  </size>
-                 </property>
-                 <property name="toolTip">
-                  <string>Move robot to &quot;forward&quot; position.</string>
-                 </property>
-                 <property name="statusTip">
-                  <string>Move robot to &quot;forward&quot; position.</string>
-                 </property>
-                 <property name="whatsThis">
-                  <string>Move robot to &quot;forward&quot; position.</string>
-                 </property>
-                 <property name="text">
-                  <string>Move Forward</string>
-                 </property>
-                </widget>
-               </item>
-              </layout>
              </item>
             </layout>
            </widget>
